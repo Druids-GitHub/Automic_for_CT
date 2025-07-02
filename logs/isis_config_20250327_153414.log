@@ -1,0 +1,43 @@
+{
+    "status": "Failed",
+    "timestamp": "20250327_153414",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "[R]\nsystem-view"
+        },
+        {
+            "command": "isis 500",
+            "output": "[R-isis-500]\nisis 500"
+        },
+        {
+            "command": "net 86.0001.0002.0003.0002.00",
+            "output": "[R-isis-500]\nnet 86.0001.0002.0003.0002.00"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[R-isis-500]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[R-isis-500]\ncost-style wide"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[R-isis-500-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[R-isis-500-ipv6]\nmulti-topology"
+        },
+        {
+            "command": "quit",
+            "output": "[R-isis-500]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[R]\nquit"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 10 hours, 26 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}

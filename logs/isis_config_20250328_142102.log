@@ -1,0 +1,31 @@
+{
+    "status": "Failed",
+    "timestamp": "20250328_142102",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "[RoCE-storage]\nsystem-view"
+        },
+        {
+            "command": "isis 600",
+            "output": "isis 600\n[RoCE-storage-isis-600]"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "is-level level-2\n[RoCE-storage-isis-600]"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "cost-style wide\n[RoCE-storage-isis-600]"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis enable 600\nAnother IS-IS process is already enabled on the interface."
+        }
+    ],
+    "system_info": ""
+}

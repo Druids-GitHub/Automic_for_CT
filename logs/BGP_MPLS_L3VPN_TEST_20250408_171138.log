@@ -1,0 +1,59 @@
+{
+    "status": "succeed",
+    "timestamp": "20250408_171138",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<CE2>system-view\nSystem View: return to User View with Ctrl+Z.\n[CE2]"
+        },
+        {
+            "command": "sysname CE2",
+            "output": "[CE2]sysname CE2\n[CE2]"
+        },
+        {
+            "command": "interface GigabitEthernet0/1",
+            "output": "[CE2]interface GigabitEthernet0/1\n[CE2-GigabitEthernet0/1]"
+        },
+        {
+            "command": "ip address 172.16.2.2 24",
+            "output": "[CE2]ip address 172.16.2.2 24\n[CE2-GigabitEthernet0/1]"
+        },
+        {
+            "command": "ipv6 address 2025:2::2 64",
+            "output": "[CE2]ipv6 address 2025:2::2 64\n[CE2-GigabitEthernet0/1]"
+        },
+        {
+            "command": "quit",
+            "output": "[CE2]quit\n[CE2]"
+        },
+        {
+            "command": "bgp 64510",
+            "output": "[CE2]bgp 64510\n[CE2-bgp-default]"
+        },
+        {
+            "command": "peer 172.16.2.1 as 100",
+            "output": "[CE2-bgp-default]peer 172.16.2.1 as 100\n[CE2-bgp-default]"
+        },
+        {
+            "command": "peer 2025:2::1 as 100",
+            "output": "[CE2-bgp-default]peer 2025:2::1 as 100\n[CE2-bgp-default]"
+        },
+        {
+            "command": "address-family ipv4 unicast",
+            "output": "[CE2-bgp-default]address-family ipv4 unicast\n[CE2-bgp-default-ipv4]"
+        },
+        {
+            "command": "peer 172.16.2.1 enable",
+            "output": "[CE2-bgp-default-ipv4]peer 172.16.2.1 enable\n[CE2-bgp-default-ipv4]"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[CE2-bgp-default-ipv4]address-family ipv6 unicast\n[CE2-bgp-default-ipv6]"
+        },
+        {
+            "command": "peer 2025:2::1 enable",
+            "output": "[CE2-bgp-default-ipv6]peer 2025:2::1 enable\n[CE2-bgp-default-ipv6]"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 3 hours, 28 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}

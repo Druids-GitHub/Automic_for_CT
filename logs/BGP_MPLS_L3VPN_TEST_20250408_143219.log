@@ -1,0 +1,112 @@
+{
+    "status": "Failed",
+    "timestamp": "20250408_143219",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "[H3C]system-view\nSystem View: return to User View with Ctrl+Z.\n"
+        },
+        {
+            "command": "sysname P",
+            "output": "[P]sysname P\n"
+        },
+        {
+            "command": "isis 100",
+            "output": "[P-isis-100]isis 100\n"
+        },
+        {
+            "command": "network-entity 86.0000.0002.0002.0002.00",
+            "output": "[P-isis-100]network-entity 86.0000.0002.0002.0002.00\n"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[P-isis-100]is-level level-2\n"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[P-isis-100]cost-style wide\n"
+        },
+        {
+            "command": "quit",
+            "output": "[P]quit\n"
+        },
+        {
+            "command": "mpls lsr-id 2.2.2.2",
+            "output": "[P]mpls lsr-id 2.2.2.2\n"
+        },
+        {
+            "command": "mpls ldp",
+            "output": "[P-ldp]mpls ldp\n"
+        },
+        {
+            "command": "quit",
+            "output": "[P]quit\n"
+        },
+        {
+            "command": "interface loopback 1",
+            "output": "[P-LoopBack1]interface loopback 1\n"
+        },
+        {
+            "command": "ip address 2.2.2.2 32",
+            "output": "[P-LoopBack1]ip address 2.2.2.2 32\n"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[P-LoopBack1]isis enable 100\n"
+        },
+        {
+            "command": "quit",
+            "output": "[P]quit\n"
+        },
+        {
+            "command": "interface GigabitEthernet0/1",
+            "output": "interface GigabitEthernet0/1\n[P-GigabitEthernet0/1]"
+        },
+        {
+            "command": "ip address 10.1.1.2 24",
+            "output": "ip address 10.1.1.2 24\n[P-GigabitEthernet0/1]"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "isis enable 100\n[P-GigabitEthernet0/1]"
+        },
+        {
+            "command": "mpls enable",
+            "output": "mpls enable\n[P-GigabitEthernet0/1]"
+        },
+        {
+            "command": "mpls ldp enable",
+            "output": "mpls ldp enable\n[P-GigabitEthernet0/1]"
+        },
+        {
+            "command": "quit",
+            "output": "[P]quit\n"
+        },
+        {
+            "command": "interface GigabitEthernet0/2",
+            "output": "interface GigabitEthernet0/2\n[P-GigabitEthernet0/2]"
+        },
+        {
+            "command": "ip address 20.1.1.2 24",
+            "output": "ip address 20.1.1.2 24\n[P-GigabitEthernet0/2]"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "isis enable 100\n[P-GigabitEthernet0/2]"
+        },
+        {
+            "command": "mpls enable",
+            "output": "mpls enable\n[P-GigabitEthernet0/2]"
+        },
+        {
+            "command": "mpls ldp enable",
+            "output": "mpls ldp enable\n[P-GigabitEthernet0/2]"
+        },
+        {
+            "command": "quit",
+            "output": "[P]quit\n"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 0 hours, 2 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n512M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42",
+    "error_message": "TCP connection to device failed.\n\nCommon causes of this problem are:\n1. Incorrect hostname or IP address.\n2. Wrong TCP port.\n3. Intermediate firewall blocking access.\n\nDevice settings: hp_comware 192.168.56.100:22\n\n"
+}

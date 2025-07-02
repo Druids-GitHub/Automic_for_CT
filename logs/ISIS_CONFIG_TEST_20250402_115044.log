@@ -1,0 +1,16 @@
+{
+    "status": "Failed",
+    "timestamp": "20250402_115044",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<R>system-view\nSystem View: return to User View with Ctrl+Z."
+        },
+        {
+            "command": "isis 100",
+            "output": "[R]isis 100\n"
+        }
+    ],
+    "system_info": "",
+    "error_message": "执行命令 'network-entity 49.0001.1234.1234.1234.xx' 失败，设备返回了错误信息"
+}

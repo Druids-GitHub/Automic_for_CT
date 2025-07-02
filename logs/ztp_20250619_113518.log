@@ -1,0 +1,87 @@
+2025-06-19 11:35:18,072 - ZTP - INFO - ZTP管理器初始化完成
+2025-06-19 11:35:19,818 - ZTP - INFO - 启动ZTP必要服务...
+2025-06-19 11:35:19,819 - ZTP - INFO - 正在启动DHCP服务器 192.168.56.1...
+2025-06-19 11:35:19,870 - ZTP - INFO - 在Windows系统上运行，跳过Unix特有的权限检查
+2025-06-19 11:35:19,870 - ZTP - INFO - DHCP服务器已启动，IP范围: 192.168.56.100 - 192.168.56.200
+2025-06-19 11:35:19,870 - ZTP - INFO - DHCP选项配置: Option 66=192.168.56.1, Option 67=ztp_config.py
+2025-06-19 11:35:19,871 - ZTP - INFO - TFTP服务器 192.168.56.1 假定可用
+2025-06-19 11:35:19,879 - ZTP - ERROR - FTP服务器 192.168.56.1 连接失败: 530 Not logged in
+2025-06-19 11:35:19,880 - ZTP - WARNING - FTP服务器连接失败，可能影响ZTP流程
+2025-06-19 11:35:21,890 - ZTP - ERROR - HTTP服务器 192.168.56.11 连接失败: HTTPConnectionPool(host='192.168.56.11', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000015361793E00>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+2025-06-19 11:35:21,891 - ZTP - WARNING - HTTP服务器连接失败，可能影响ZTP流程
+2025-06-19 11:35:21,891 - ZTP - INFO - ZTP服务启动完成
+2025-06-19 11:35:21,891 - ZTP - INFO - 开始处理设备: MAC=00:11:22:33:44:55, SN=210235A1MKH163000133
+2025-06-19 11:35:21,892 - ZTP - INFO - 为MAC 00:11:22:33:44:55分配IP 192.168.56.100
+2025-06-19 11:35:21,892 - ZTP - INFO - 设备已获取IP: 192.168.56.100
+2025-06-19 11:35:21,892 - ZTP - INFO - 通过SN 210235A1MKH163000133 识别设备: SW-CORE-01
+2025-06-19 11:35:21,892 - ZTP - INFO - 尝试以hp_comware类型连接设备 192.168.56.100...
+2025-06-19 11:35:31,894 - ZTP - ERROR - 设备连接失败: TCP connection to device failed.
+
+Common causes of this problem are:
+1. Incorrect hostname or IP address.
+2. Wrong TCP port.
+3. Intermediate firewall blocking access.
+
+Device settings: hp_comware 192.168.56.100:22
+
+
+2025-06-19 11:35:31,896 - ZTP - WARNING - 无法检测设备厂商，默认使用h3c
+2025-06-19 11:35:32,473 - ZTP - ERROR - 从TFTP服务器下载 /configs\SW-CORE-01.cfg 失败: Command 'tftp -i 192.168.56.1 GET /configs\SW-CORE-01.cfg temp\SW-CORE-01.cfg' returned non-zero exit status 1.
+2025-06-19 11:35:34,568 - ZTP - ERROR - 从HTTP服务器下载 /configs\SW-CORE-01.cfg 失败: <urlopen error [WinError 10061] 由于目标计算机积极拒绝，无法连接。>
+2025-06-19 11:35:34,582 - ZTP - ERROR - 从FTP服务器下载 /configs\SW-CORE-01.cfg 失败: 530 Not logged in
+2025-06-19 11:35:34,582 - ZTP - ERROR - 无法下载配置文件，将使用基本配置
+2025-06-19 11:35:34,583 - ZTP - INFO - 生成基本配置...
+2025-06-19 11:35:34,583 - ZTP - INFO - 基本配置已生成并保存到 temp\SW-CORE-01_basic_config.txt
+2025-06-19 11:35:34,584 - ZTP - ERROR - ZTP脚本不存在: /scripts\h3c_ztp.py
+2025-06-19 11:35:34,584 - ZTP - INFO - 开始应用设备配置...
+2025-06-19 11:35:44,585 - ZTP - ERROR - 应用配置到H3C设备 192.168.56.100 失败: TCP connection to device failed.
+
+Common causes of this problem are:
+1. Incorrect hostname or IP address.
+2. Wrong TCP port.
+3. Intermediate firewall blocking access.
+
+Device settings: hp_comware 192.168.56.100:22
+
+
+2025-06-19 11:35:44,587 - ZTP - ERROR - 配置应用失败，ZTP流程未完成
+2025-06-19 11:35:44,587 - ZTP - INFO - 开始处理设备: MAC=00:22:33:44:55:66, SN=210235A1MKH163000134
+2025-06-19 11:35:44,588 - ZTP - INFO - 为MAC 00:22:33:44:55:66分配IP 192.168.56.101
+2025-06-19 11:35:44,588 - ZTP - INFO - 设备已获取IP: 192.168.56.101
+2025-06-19 11:35:44,588 - ZTP - INFO - 通过SN 210235A1MKH163000134 识别设备: SW-CORE-02
+2025-06-19 11:35:44,588 - ZTP - INFO - 尝试以hp_comware类型连接设备 192.168.56.101...
+2025-06-19 11:35:54,590 - ZTP - ERROR - 设备连接失败: TCP connection to device failed.
+
+Common causes of this problem are:
+1. Incorrect hostname or IP address.
+2. Wrong TCP port.
+3. Intermediate firewall blocking access.
+
+Device settings: hp_comware 192.168.56.101:22
+
+
+2025-06-19 11:35:54,592 - ZTP - WARNING - 无法检测设备厂商，默认使用h3c
+2025-06-19 11:35:55,273 - ZTP - ERROR - 从TFTP服务器下载 /configs\SW-CORE-02.cfg 失败: Command 'tftp -i 192.168.56.1 GET /configs\SW-CORE-02.cfg temp\SW-CORE-02.cfg' returned non-zero exit status 1.
+2025-06-19 11:35:57,279 - ZTP - ERROR - 从HTTP服务器下载 /configs\SW-CORE-02.cfg 失败: <urlopen error [WinError 10061] 由于目标计算机积极拒绝，无法连接。>
+2025-06-19 11:35:57,290 - ZTP - ERROR - 从FTP服务器下载 /configs\SW-CORE-02.cfg 失败: 530 Not logged in
+2025-06-19 11:35:57,290 - ZTP - ERROR - 无法下载配置文件，将使用基本配置
+2025-06-19 11:35:57,290 - ZTP - INFO - 生成基本配置...
+2025-06-19 11:35:57,293 - ZTP - INFO - 基本配置已生成并保存到 temp\SW-CORE-02_basic_config.txt
+2025-06-19 11:35:57,294 - ZTP - ERROR - ZTP脚本不存在: /scripts\h3c_ztp.py
+2025-06-19 11:35:57,294 - ZTP - INFO - 开始应用设备配置...
+2025-06-19 11:36:07,295 - ZTP - ERROR - 应用配置到H3C设备 192.168.56.101 失败: TCP connection to device failed.
+
+Common causes of this problem are:
+1. Incorrect hostname or IP address.
+2. Wrong TCP port.
+3. Intermediate firewall blocking access.
+
+Device settings: hp_comware 192.168.56.101:22
+
+
+2025-06-19 11:36:07,297 - ZTP - ERROR - 配置应用失败，ZTP流程未完成
+2025-06-19 11:36:07,297 - ZTP - INFO - ZTP流程完成: 0/2 设备成功
+2025-06-19 11:36:07,297 - ZTP - INFO - 停止ZTP服务...
+2025-06-19 11:36:07,298 - ZTP - INFO - 正在停止DHCP服务器...
+2025-06-19 11:36:07,298 - ZTP - INFO - DHCP服务器已停止
+2025-06-19 11:36:07,298 - ZTP - INFO - ZTP服务已停止

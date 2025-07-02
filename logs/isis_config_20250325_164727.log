@@ -1,0 +1,119 @@
+{
+    "status": "succeed",
+    "timestamp": "20250325_164727",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "system-view\nSystem View: return to User View with Ctrl+Z.\n[H3C]"
+        },
+        {
+            "command": "isis 600",
+            "output": "[H3C-isis-600]\nisis 600"
+        },
+        {
+            "command": "net 69.0002.0002.0002.0002.00",
+            "output": "[H3C-isis-600]\nnet 69.0002.0002.0002.0002.00"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[H3C-isis-600]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[H3C-isis-600]\ncost-style wide"
+        },
+        {
+            "command": "quit",
+            "output": "[H3C]\nquit"
+        },
+        {
+            "command": "interface gi5/0",
+            "output": "[H3C-GigabitEthernet5/0]\ninterface gi5/0"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[H3C-GigabitEthernet5/0]\nisis enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[H3C-GigabitEthernet5/0]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[H3C-GigabitEthernet5/0]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[H3C]\nquit"
+        },
+        {
+            "command": "vlan 300",
+            "output": "[H3C-vlan300]\nvlan 300"
+        },
+        {
+            "command": "interface Vlan-interface300",
+            "output": "[H3C-Vlan-interface300]\ninterface Vlan-interface300"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[H3C-Vlan-interface300]\nisis enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[H3C-Vlan-interface300]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[H3C-Vlan-interface300]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[H3C]\nquit"
+        },
+        {
+            "command": "vlan 400",
+            "output": "[H3C-vlan400]\nvlan 400"
+        },
+        {
+            "command": "interface Vlan-interface400",
+            "output": "[H3C-Vlan-interface400]\ninterface Vlan-interface400"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[H3C-Vlan-interface400]\nisis enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[H3C-Vlan-interface400]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[H3C-Vlan-interface400]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[H3C]\nquit"
+        },
+        {
+            "command": "interface gi5/1",
+            "output": "[H3C-GigabitEthernet5/1]\ninterface gi5/1"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[H3C-GigabitEthernet5/1]\nisis enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[H3C-GigabitEthernet5/1]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[H3C-GigabitEthernet5/1]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[H3C]\nquit"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 21 hours, 42 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}

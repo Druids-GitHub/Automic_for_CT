@@ -1,0 +1,123 @@
+{
+    "status": "succeed",
+    "timestamp": "20250328_152148",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<RoCE-storage>system-view\n<RoCE-storage>\n<RoCE-storage>system-view\nSystem View: return to User View with Ctrl+Z.\n[RoCE-storage]"
+        },
+        {
+            "command": "isis 600",
+            "output": "[RoCE-storage-isis-600]\nisis 600"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[RoCE-storage-isis-600]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[RoCE-storage-isis-600]\ncost-style wide"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[RoCE-storage-isis-600-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[RoCE-storage-isis-600-ipv6]\nmulti-topology"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage-isis-600]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis enable 600"
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis ipv6 enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[RoCE-storage-LoopBack12]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[RoCE-storage-LoopBack12]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "ip address 142.168.1.1 24",
+            "output": "[RoCE-storage-LoopBack12]\nip address 142.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 3925::1 64",
+            "output": "[RoCE-storage-LoopBack12]\nipv6 address 3925::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "vlan 111",
+            "output": "[RoCE-storage-vlan111]\nvlan 111"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface HGE1/0/55",
+            "output": "[RoCE-storage-HundredGigE1/0/55]\ninterface HGE1/0/55"
+        },
+        {
+            "command": "port access vlan 111",
+            "output": "[RoCE-storage-HundredGigE1/0/55]\nport access vlan 111"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface111",
+            "output": "[RoCE-storage-Vlan-interface111]\ninterface Vlan-interface111"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[RoCE-storage-Vlan-interface111]\nisis enable 600"
+        },
+        {
+            "command": "isis circuit-type p2p",
+            "output": "[RoCE-storage-Vlan-interface111]\nisis circuit-type p2p"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[RoCE-storage-Vlan-interface111]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[RoCE-storage-Vlan-interface111]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        }
+    ],
+    "system_info": "[RoCE-storage]"
+}

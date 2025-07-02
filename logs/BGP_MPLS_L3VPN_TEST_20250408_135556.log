@@ -1,0 +1,7 @@
+{
+    "status": "Failed",
+    "timestamp": "20250408_135556",
+    "result": [],
+    "system_info": null,
+    "error_message": "TCP connection to device failed.\n\nCommon causes of this problem are:\n1. Incorrect hostname or IP address.\n2. Wrong TCP port.\n3. Intermediate firewall blocking access.\n\nDevice settings: hp_comware 192.168.56.10:22\n\n"
+}

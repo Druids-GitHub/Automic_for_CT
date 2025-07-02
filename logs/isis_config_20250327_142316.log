@@ -1,0 +1,91 @@
+{
+    "status": "Failed",
+    "timestamp": "20250327_142316",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "system-view\nSystem View: return to User View with Ctrl+Z.\n[SW]"
+        },
+        {
+            "command": "isis 100",
+            "output": "[SW-isis-100]\nisis 100"
+        },
+        {
+            "command": "net 50.0001.0002.0002.0002.00",
+            "output": "[SW-isis-100]\nnet 50.0001.0002.0002.0002.00"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[SW-isis-100]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[SW-isis-100]\ncost-style wide"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[SW-isis-100-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[SW-isis-100-ipv6]\nmulti-topology"
+        },
+        {
+            "command": "quit",
+            "output": "[SW-isis-100]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "vlan 123",
+            "output": "[SW-vlan123]\nvlan 123"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface GigabitEthernet1/0/11",
+            "output": "interface GigabitEthernet1/0/11\n[SW-GigabitEthernet1/0/11]"
+        },
+        {
+            "command": "port access vlan 123",
+            "output": "port access vlan 123\n[SW-GigabitEthernet1/0/11]"
+        },
+        {
+            "command": "quit",
+            "output": "quit\n[SW]"
+        },
+        {
+            "command": "interface Vlan-interface123",
+            "output": "[SW-Vlan-interface123]\ninterface Vlan-interface123"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[SW-Vlan-interface123]\nisis enable 100"
+        },
+        {
+            "command": "isis ipv6 enable 100",
+            "output": "[SW-Vlan-interface123]\nisis ipv6 enable 100"
+        },
+        {
+            "command": "isis circuit-type p2p",
+            "output": "[SW-Vlan-interface123]\nisis circuit-type p2p"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-Vlan-interface123]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[SW-Vlan-interface123]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        }
+    ],
+    "system_info": "接口配置失败：cannot access local variable 'current_ipv6_address' where it is not associated with a value"
+}

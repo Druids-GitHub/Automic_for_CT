@@ -1,0 +1,123 @@
+{
+    "status": "succeed",
+    "timestamp": "20250401_090559",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<R>system-view\nSystem View: return to User View with Ctrl+Z."
+        },
+        {
+            "command": "isis 100",
+            "output": "[R]isis 100\n"
+        },
+        {
+            "command": "network-entity 49.0000.1921.6800.2002.00",
+            "output": "[R-isis-100]network-entity 49.0000.1921.6800.2002.00\nNET Set - System is running. SystemId conflict."
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[R-isis-100]is-level level-2\n"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[R-isis-100]cost-style wide\n"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[R-isis-100]address-family ipv6 unicast\n"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[R-isis-100-ipv6]multi-topology\n"
+        },
+        {
+            "command": "quit",
+            "output": "[R-isis-100-ipv6]quit\n"
+        },
+        {
+            "command": "quit",
+            "output": "[R-isis-100]quit\n"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[R-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[R-LoopBack12]\nisis enable 100"
+        },
+        {
+            "command": "isis ipv6 enable 100",
+            "output": "[R-LoopBack12]\nisis ipv6 enable 100"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[R-LoopBack12]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[R-LoopBack12]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[R]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[R-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "ip address 192.168.2.2 32",
+            "output": "[R-LoopBack12]\nip address 192.168.2.2 32"
+        },
+        {
+            "command": "ipv6 address 1::1 128",
+            "output": "[R-LoopBack12]\nipv6 address 1::1 128"
+        },
+        {
+            "command": "quit",
+            "output": "[R]\nquit"
+        },
+        {
+            "command": "interface Ge0/1",
+            "output": "[R-GigabitEthernet0/1]\ninterface Ge0/1"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[R-GigabitEthernet0/1]\nisis enable 100"
+        },
+        {
+            "command": "isis ipv6 enable 100",
+            "output": "[R-GigabitEthernet0/1]\nisis ipv6 enable 100"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[R-GigabitEthernet0/1]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[R-GigabitEthernet0/1]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[R]\nquit"
+        },
+        {
+            "command": "interface Ge0/1",
+            "output": "[R-GigabitEthernet0/1]\ninterface Ge0/1"
+        },
+        {
+            "command": "ip address 143.168.1.1 24",
+            "output": "[R-GigabitEthernet0/1]\nip address 143.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 3921::2 64",
+            "output": "[R-GigabitEthernet0/1]\nipv6 address 3921::2 64"
+        },
+        {
+            "command": "quit",
+            "output": "[R]\nquit"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 5 hours, 46 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}

@@ -1,0 +1,171 @@
+{
+    "status": "succeed",
+    "timestamp": "20250328_174132",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<RoCE-storage>system-view\nSystem View: return to User View with Ctrl+Z.\n[RoCE-storage]"
+        },
+        {
+            "command": "isis 800",
+            "output": "[RoCE-storage-isis-800]\nisis 800"
+        },
+        {
+            "command": "network-entity 86.4134.0002.0002.0002.00",
+            "output": "[RoCE-storage-isis-800]\nnetwork-entity 86.4134.0002.0002.0002.00"
+        },
+        {
+            "command": "is-level level-1",
+            "output": "[RoCE-storage-isis-800]\nis-level level-1"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[RoCE-storage-isis-800]\ncost-style wide"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[RoCE-storage-isis-800-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[RoCE-storage-isis-800-ipv6]\nmulti-topology"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage-isis-800]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback13",
+            "output": "[RoCE-storage-LoopBack13]\ninterface loopback13"
+        },
+        {
+            "command": "isis enable 800",
+            "output": "[RoCE-storage-LoopBack13]\nisis enable 800"
+        },
+        {
+            "command": "isis ipv6 enable 800",
+            "output": "[RoCE-storage-LoopBack13]\nisis ipv6 enable 800"
+        },
+        {
+            "command": "isis circuit-level level-1",
+            "output": "[RoCE-storage-LoopBack13]\nisis circuit-level level-1"
+        },
+        {
+            "command": "isis cost 1",
+            "output": "[RoCE-storage-LoopBack13]\nisis cost 1"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback13",
+            "output": "[RoCE-storage-LoopBack13]\ninterface loopback13"
+        },
+        {
+            "command": "ip address 152.168.1.1 24",
+            "output": "[RoCE-storage-LoopBack13]\nip address 152.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 2920::1 64",
+            "output": "[RoCE-storage-LoopBack13]\nipv6 address 2920::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface wGE1/0/10",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\ninterface wGE1/0/10"
+        },
+        {
+            "command": "isis enable 800",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\nisis enable 800"
+        },
+        {
+            "command": "isis ipv6 enable 800",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\nisis ipv6 enable 800"
+        },
+        {
+            "command": "isis circuit-type p2p",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\nisis circuit-type p2p"
+        },
+        {
+            "command": "isis circuit-level level-1",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\nisis circuit-level level-1"
+        },
+        {
+            "command": "isis cost 1",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\nisis cost 1"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface wGE1/0/10",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\ninterface wGE1/0/10"
+        },
+        {
+            "command": "ip address 153.168.1.1 24",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\nip address 153.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 2921::1 64",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/10]\nipv6 address 2921::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface wGE1/0/11",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\ninterface wGE1/0/11"
+        },
+        {
+            "command": "isis enable 800",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\nisis enable 800"
+        },
+        {
+            "command": "isis ipv6 enable 800",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\nisis ipv6 enable 800"
+        },
+        {
+            "command": "isis circuit-type p2p",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\nisis circuit-type p2p"
+        },
+        {
+            "command": "isis circuit-level level-1",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\nisis circuit-level level-1"
+        },
+        {
+            "command": "isis cost 1",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\nisis cost 1"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface wGE1/0/11",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\ninterface wGE1/0/11"
+        },
+        {
+            "command": "ip address 154.168.1.1 24",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\nip address 154.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 2922::1 64",
+            "output": "[RoCE-storage-Twenty-FiveGigE1/0/11]\nipv6 address 2922::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        }
+    ],
+    "system_info": ""
+}

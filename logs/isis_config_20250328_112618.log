@@ -1,0 +1,59 @@
+{
+    "status": "Failed",
+    "timestamp": "20250328_112618",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "[RoCE-storage]\nsystem-view"
+        },
+        {
+            "command": "isis 500",
+            "output": "[RoCE-storage-isis-500]\nisis 500"
+        },
+        {
+            "command": "net 86.0001.0002.0003.0002.00",
+            "output": "[RoCE-storage-isis-500]\nnet 86.0001.0002.0003.0002.00"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[RoCE-storage-isis-500]\nis-level level-2"
+        },
+        {
+            "command": "cost-style narrow",
+            "output": "[RoCE-storage-isis-500]\ncost-style narrow"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[RoCE-storage-isis-500-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[RoCE-storage-isis-500-ipv6]\nmulti-topology\nCost style must be wide, compatible or wide-compatible."
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage-isis-500]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback11",
+            "output": "[RoCE-storage-LoopBack11]\ninterface loopback11"
+        },
+        {
+            "command": "isis enable 500",
+            "output": "[RoCE-storage-LoopBack11]\nisis enable 500"
+        },
+        {
+            "command": "isis ipv6 enable 500",
+            "output": "[RoCE-storage-LoopBack11]\nisis ipv6 enable 500"
+        },
+        {
+            "command": "isis circuit-type p2p",
+            "output": "[RoCE-storage-LoopBack11]\nisis circuit-type p2p\n                              ^\n % Unrecognized command found at '^' position."
+        }
+    ],
+    "system_info": "<RoCE-storage>"
+}

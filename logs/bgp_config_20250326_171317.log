@@ -1,0 +1,9 @@
+{
+    "status": "succeed",
+    "timestamp": "20250326_171317",
+    "result": "配置完成，3秒后自动退出...",
+    "system_info": {
+        "设备IP": "192.168.56.10",
+        "错误信息": "get_system_info() takes 1 positional argument but 3 were given"
+    }
+}

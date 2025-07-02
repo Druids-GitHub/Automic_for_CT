@@ -1,0 +1,119 @@
+{
+    "status": "Failed",
+    "timestamp": "20250331_114019",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "system-view\nSystem View: return to User View with Ctrl+Z.\n[SW]"
+        },
+        {
+            "command": "isis 600",
+            "output": "[SW-isis-600]\nisis 600"
+        },
+        {
+            "command": "network-entity 89.4134.0002.0002.0002.00",
+            "output": "[SW-isis-600]\nnetwork-entity 89.4134.0002.0002.0002.00"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[SW-isis-600]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[SW-isis-600]\ncost-style wide"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[SW-isis-600-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[SW-isis-600-ipv6]\nmulti-topology"
+        },
+        {
+            "command": "quit",
+            "output": "[SW-isis-600]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[SW-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[SW-LoopBack12]\nisis enable 600"
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[SW-LoopBack12]\nisis ipv6 enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-LoopBack12]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 1",
+            "output": "[SW-LoopBack12]\nisis cost 1"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[SW-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "ip address 2.2.2.2 32",
+            "output": "[SW-LoopBack12]\nip address 2.2.2.2 32"
+        },
+        {
+            "command": "ipv6 address 2::2 128",
+            "output": "[SW-LoopBack12]\nipv6 address 2::2 128"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "vlan 111",
+            "output": "[SW-vlan111]\nvlan 111"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface ge1/0/1",
+            "output": "[SW-GigabitEthernet1/0/1]\ninterface ge1/0/1"
+        },
+        {
+            "command": "port access vlan 111",
+            "output": "[SW-GigabitEthernet1/0/1]\nport access vlan 111"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface111",
+            "output": "[SW-Vlan-interface111]\ninterface Vlan-interface111"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[SW-Vlan-interface111]\nisis enable 600"
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[SW-Vlan-interface111]\nisis ipv6 enable 600"
+        },
+        {
+            "command": "isis circuit-type p2p2",
+            "output": "[SW-Vlan-interface111]\nisis circuit-type p2p2\n                                        ^\n % Unrecognized command found at '^' position."
+        }
+    ],
+    "system_info": "接口配置失败：write_log() takes 3 positional arguments but 4 were given"
+}

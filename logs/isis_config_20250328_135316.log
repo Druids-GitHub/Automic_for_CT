@@ -1,0 +1,51 @@
+{
+    "status": "Failed",
+    "timestamp": "20250328_135316",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "[RoCE-storage]\nsystem-view"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis enable 600\nNo such process exists."
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis ipv6 enable 600\nNo such process exists."
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[RoCE-storage-LoopBack12]\nisis circuit-level level-2\nNo traditional IS-IS is enabled on the interface."
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[RoCE-storage-LoopBack12]\nisis cost 10\nNo traditional IS-IS is enabled on the interface."
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "ip address 142.168.1.1 24",
+            "output": "[RoCE-storage-LoopBack12]\nip address 142.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 3925::1 64",
+            "output": "[RoCE-storage-LoopBack12]\nipv6 address 3925::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        }
+    ],
+    "system_info": ""
+}

@@ -1,0 +1,79 @@
+{
+    "status": "Failed",
+    "timestamp": "20250328_150808",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<RoCE-storage>system-view\nSystem View: return to User View with Ctrl+Z.\n[RoCE-storage]"
+        },
+        {
+            "command": "isis 600",
+            "output": "[RoCE-storage-isis-600]\nisis 600"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[RoCE-storage-isis-600]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[RoCE-storage-isis-600]\ncost-style wide"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[RoCE-storage-isis-600-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[RoCE-storage-isis-600-ipv6]\nmulti-topology"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage-isis-600]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis enable 600"
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis ipv6 enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[RoCE-storage-LoopBack12]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[RoCE-storage-LoopBack12]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "ip address 142.168.1.1 24",
+            "output": "[RoCE-storage-LoopBack12]\nip address 142.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 3925::1 64",
+            "output": "[RoCE-storage-LoopBack12]\nipv6 address 3925::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.070, Release 6710P03\nCopyright (c) 2004-2023 New H3C Technologies Co., Ltd. All rights reserved.\nH3C S6850-56HF uptime is 2 weeks, 2 days, 3 hours, 57 minutes\nLast reboot reason : User reboot\n\nBoot image: flash:/s9850_6850-cmw710-boot-r6710p03.bin\nBoot image version: 7.1.070, Release 6710P03\n  Compiled May 05 2023 11:00:00\nSystem image: flash:/s9850_6850-cmw710-system-r6710p03.bin\nSystem image version: 7.1.070, Release 6710P03\n  Compiled May 05 2023 11:00:00\n\n\nMPU(M) Slot 1:\nUptime is 2 weeks,2 days,3 hours,57 minutes\nH3C S6850-56HF MPU(M) with 1 C3558 Processor(s)\nBOARD TYPE:         S6850-56HF\nDRAM:               8192M bytes\nFLASH:              3616M bytes\nNVRAM:              0K bytes\nPCB 1 Version:      VER.A\nPCB 2 Version:      VER.A\nBasic    BootWare Version: 300\nExtended BootWare Version: 300\nCPLD 1 Version:     004\nCPLD 2 Version:     004\nCPLD 3 Version:     001\nRelease Version:    H3C S6850-56HF-6710P03\nPatch Version:      None\nReboot Cause:       UserReboot\n[SubSlot 0] 48SFP28 + 8QSFP28"
+}

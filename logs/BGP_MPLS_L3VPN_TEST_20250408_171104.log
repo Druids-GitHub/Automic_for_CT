@@ -1,0 +1,183 @@
+{
+    "status": "succeed",
+    "timestamp": "20250408_171104",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<PE1>system-view\nSystem View: return to User View with Ctrl+Z.\n[PE1]"
+        },
+        {
+            "command": "sysname PE1",
+            "output": "[PE1]sysname PE1\n[PE1]"
+        },
+        {
+            "command": "isis 100",
+            "output": "[PE1]isis 100\n[PE1-isis-100]"
+        },
+        {
+            "command": "network-entity 86.0000.0001.0001.0001.00",
+            "output": "[PE1-isis-100]network-entity 86.0000.0001.0001.0001.00\n[PE1-isis-100]"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[PE1-isis-100]is-level level-2\n[PE1-isis-100]"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[PE1-isis-100]cost-style wide\n[PE1-isis-100]"
+        },
+        {
+            "command": "quit",
+            "output": "[PE1-isis-100]quit\n[PE1]"
+        },
+        {
+            "command": "ip vpn-instance vpn1",
+            "output": "[PE1]ip vpn-instance vpn1\n[PE1-vpn-instance-vpn1]"
+        },
+        {
+            "command": "route-distinguisher 100:100",
+            "output": "[PE1-vpn-instance-vpn1]route-distinguisher 100:100\n[PE1-vpn-instance-vpn1]"
+        },
+        {
+            "command": "vpn-target 111:111 both",
+            "output": "[PE1-vpn-instance-vpn1]vpn-target 111:111 both\n[PE1-vpn-instance-vpn1]"
+        },
+        {
+            "command": "mpls lsr-id 1.1.1.1",
+            "output": "[PE1-vpn-instance-vpn1]mpls lsr-id 1.1.1.1\n[PE1]"
+        },
+        {
+            "command": "mpls ldp",
+            "output": "[PE1]mpls ldp\n[PE1-ldp]"
+        },
+        {
+            "command": "quit",
+            "output": "[PE1-ldp]quit\n[PE1]"
+        },
+        {
+            "command": "interface loopback 1",
+            "output": "[PE1]interface loopback 1\n[PE1-LoopBack1]"
+        },
+        {
+            "command": "ip address 1.1.1.1 32",
+            "output": "[PE1-LoopBack1]ip address 1.1.1.1 32\n[PE1-LoopBack1]"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[PE1-LoopBack1]isis enable 100\n[PE1-LoopBack1]"
+        },
+        {
+            "command": "quit",
+            "output": "[PE1-LoopBack1]quit\n[PE1]"
+        },
+        {
+            "command": "interface GigabitEthernet0/1",
+            "output": "[PE1]interface GigabitEthernet0/1\n[PE1-GigabitEthernet0/1]"
+        },
+        {
+            "command": "ip address 10.1.1.1 24",
+            "output": "[PE1]ip address 10.1.1.1 24\n[PE1-GigabitEthernet0/1]"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[PE1]isis enable 100\n[PE1-GigabitEthernet0/1]"
+        },
+        {
+            "command": "mpls enable",
+            "output": "[PE1]mpls enable\n[PE1-GigabitEthernet0/1]"
+        },
+        {
+            "command": "mpls ldp enable",
+            "output": "[PE1]mpls ldp enable\n[PE1-GigabitEthernet0/1]"
+        },
+        {
+            "command": "quit",
+            "output": "[PE1]quit\n[PE1]"
+        },
+        {
+            "command": "interface GigabitEthernet0/2",
+            "output": "[PE1]interface GigabitEthernet0/2\n[PE1-GigabitEthernet0/2]"
+        },
+        {
+            "command": "ip binding vpn-instance vpn1",
+            "output": "[PE1]ip binding vpn-instance vpn1\n[PE1-GigabitEthernet0/2]"
+        },
+        {
+            "command": "ip address 172.16.1.1 24",
+            "output": "[PE1]ip address 172.16.1.1 24\n[PE1-GigabitEthernet0/2]"
+        },
+        {
+            "command": "ipv6 address 2025:1::1 64",
+            "output": "[PE1]ipv6 address 2025:1::1 64\n[PE1-GigabitEthernet0/2]"
+        },
+        {
+            "command": "quit",
+            "output": "[PE1]quit\n[PE1]"
+        },
+        {
+            "command": "bgp 100",
+            "output": "[PE1]bgp 100\n[PE1-bgp-default]"
+        },
+        {
+            "command": "peer 3.3.3.3 as-number 100",
+            "output": "[PE1-bgp-default]peer 3.3.3.3 as-number 100\n[PE1-bgp-default]"
+        },
+        {
+            "command": "peer 3.3.3.3 connect-interface loopback 1",
+            "output": "[PE1-bgp-default]peer 3.3.3.3 connect-interface loopback 1\n[PE1-bgp-default]"
+        },
+        {
+            "command": "address-family vpnv4",
+            "output": "[PE1-bgp-default]address-family vpnv4\n[PE1-bgp-default-vpnv4]"
+        },
+        {
+            "command": "peer 3.3.3.3 enable",
+            "output": "[PE1-bgp-default-vpnv4]peer 3.3.3.3 enable\n[PE1-bgp-default-vpnv4]"
+        },
+        {
+            "command": "address-family vpnv6",
+            "output": "[PE1-bgp-default-vpnv4]address-family vpnv6\n[PE1-bgp-default-vpnv6]"
+        },
+        {
+            "command": "peer 3.3.3.3 enable",
+            "output": "[PE1-bgp-default-vpnv6]peer 3.3.3.3 enable\n[PE1-bgp-default-vpnv6]"
+        },
+        {
+            "command": "ip vpn-instance vpn1",
+            "output": "[PE1-bgp-default-vpnv6]ip vpn-instance vpn1\n[PE1-bgp-default-vpn1]"
+        },
+        {
+            "command": "peer 172.16.1.2 as 64500",
+            "output": "[PE1-bgp-default-vpn1]peer 172.16.1.2 as 64500\n[PE1-bgp-default-vpn1]"
+        },
+        {
+            "command": "peer 2025:1::2 as 64500",
+            "output": "[PE1-bgp-default-vpn1]peer 2025:1::2 as 64500\n[PE1-bgp-default-vpn1]"
+        },
+        {
+            "command": "address-family ipv4 unicast",
+            "output": "[PE1-bgp-default-vpn1]address-family ipv4 unicast\n[PE1-bgp-default-ipv4-vpn1]"
+        },
+        {
+            "command": "peer 172.16.1.2 enable",
+            "output": "[PE1-bgp-default-ipv4-vpn1]peer 172.16.1.2 enable\n[PE1-bgp-default-ipv4-vpn1]"
+        },
+        {
+            "command": "import-route direct",
+            "output": "[PE1-bgp-default-ipv4-vpn1]import-route direct\n[PE1-bgp-default-ipv4-vpn1]"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[PE1-bgp-default-ipv4-vpn1]address-family ipv6 unicast\n[PE1-bgp-default-ipv6-vpn1]"
+        },
+        {
+            "command": "peer 2025:1::2 enable",
+            "output": "[PE1-bgp-default-ipv6-vpn1]peer 2025:1::2 enable\n[PE1-bgp-default-ipv6-vpn1]"
+        },
+        {
+            "command": "import-route direct",
+            "output": "[PE1-bgp-default-ipv6-vpn1]import-route direct\n[PE1-bgp-default-ipv6-vpn1]"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 3 hours, 28 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}

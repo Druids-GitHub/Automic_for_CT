@@ -1,0 +1,36 @@
+{
+    "status": "Failed",
+    "timestamp": "20250402_174853",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<R>system-view\nSystem View: return to User View with Ctrl+Z."
+        },
+        {
+            "command": "isis 200",
+            "output": "[R]isis 200\n"
+        },
+        {
+            "command": "network-entity 49.0000.1941.6801.0001.00",
+            "output": "[R-isis-200]network-entity 49.0000.1941.6801.0001.00\n"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[R-isis-200]is-level level-2\n"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[R-isis-200]cost-style wide\n"
+        },
+        {
+            "command": "quit",
+            "output": "[R-isis-200]quit\n"
+        },
+        {
+            "command": "interface GigabitEthernet0/2",
+            "output": "[R-GigabitEthernet0/2]\ninterface GigabitEthernet0/2"
+        }
+    ],
+    "system_info": null,
+    "error_message": "执行命令 'isis enable 200' 失败，设备返回了错误信息"
+}

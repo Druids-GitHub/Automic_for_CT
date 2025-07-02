@@ -1,0 +1,19 @@
+2025-06-19 11:55:18,258 - ZTP - INFO - ZTP管理器初始化完成
+2025-06-19 11:55:24,048 - ZTP - INFO - 启动ZTP必要服务...
+2025-06-19 11:55:24,049 - ZTP - INFO - 正在启动DHCP服务器 192.168.56.1...
+2025-06-19 11:55:24,109 - ZTP - INFO - 在Windows系统上运行，跳过Unix特有的权限检查
+2025-06-19 11:55:24,110 - ZTP - INFO - DHCP服务器已启动，IP范围: 192.168.56.100 - 192.168.56.200
+2025-06-19 11:55:24,110 - ZTP - INFO - DHCP选项配置: Option 66=192.168.56.1, Option 67=ztp_config.py
+2025-06-19 11:55:24,110 - ZTP - INFO - TFTP服务器 192.168.56.1 假定可用
+2025-06-19 11:55:26,121 - ZTP - ERROR - HTTP服务器 192.168.56.11 连接失败: HTTPConnectionPool(host='192.168.56.11', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001C1256E3CB0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+2025-06-19 11:55:26,122 - ZTP - WARNING - HTTP服务器连接失败，可能影响ZTP流程
+2025-06-19 11:55:26,122 - ZTP - INFO - ZTP服务启动完成
+2025-06-19 11:55:34,608 - ZTP - INFO - 未提供MAC地址，使用随机生成的MAC: 38:22:d6:c7:dc:35
+2025-06-19 11:55:34,608 - ZTP - INFO - 开始处理设备: MAC=38:22:d6:c7:dc:35, SN=未知
+2025-06-19 11:55:34,608 - ZTP - INFO - 为MAC 38:22:d6:c7:dc:35分配IP 192.168.56.100
+2025-06-19 11:55:34,609 - ZTP - INFO - 设备已获取IP: 192.168.56.100
+2025-06-19 11:55:34,609 - ZTP - WARNING - 未找到MAC 38:22:d6:c7:dc:35 的设备映射
+2025-06-19 11:55:34,609 - ZTP - WARNING - 无法识别设备，使用默认配置
+2025-06-19 11:55:34,609 - ZTP - INFO - 生成基本配置...
+2025-06-19 11:55:34,610 - ZTP - INFO - 基本配置已生成并保存到 temp\ZTP-UNKNOWN-c7dc35_basic_config.txt
+2025-06-19 11:55:34,610 - ZTP - INFO - ZTP脚本不存在，正在创建基本脚本: D:\PY自动化\scripts\h3c_ztp.py

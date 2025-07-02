@@ -1,0 +1,27 @@
+{
+    "status": "succeed",
+    "timestamp": "20250325_103241",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "system-view\nSystem View: return to User View with Ctrl+Z.\n[H3C]"
+        },
+        {
+            "command": "display interface brief",
+            "output": "display interface brief\nBrief information on interfaces in route mode:\nLink: ADM - administratively down; Stby - standby\nProtocol: (s) - spoofing\nInterface            Link Protocol Primary IP      Description                \nGE0/0                UP   UP       192.168.56.10   \nGE0/1                DOWN DOWN     192.168.3.1     \nGE0/2                DOWN DOWN     --              \nGE5/0                DOWN DOWN     --              \nGE5/1                DOWN DOWN     --              \nGE6/0                DOWN DOWN     --              \nGE6/1                DOWN DOWN     --              \nInLoop0              UP   UP(s)    --              \nNULL0                UP   UP(s)    --              \nREG0                 UP   --       --              \nSer1/0               DOWN DOWN     --              \nSer2/0               DOWN DOWN     --              \nSer3/0               DOWN DOWN     --              \nSer4/0               DOWN DOWN     --              \nVlan100              DOWN DOWN     192.168.30.1    \n\n[H3C]"
+        },
+        {
+            "command": "vlan 100",
+            "output": "vlan 100\n[H3C-vlan100]"
+        },
+        {
+            "command": "interface Vlan-interface100",
+            "output": "interface Vlan-interface100\n[H3C-Vlan-interface100]"
+        },
+        {
+            "command": "ip address 192.168.30.1 24",
+            "output": "ip address 192.168.30.1 24\n[H3C-Vlan-interface100]"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 17 hours, 35 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}

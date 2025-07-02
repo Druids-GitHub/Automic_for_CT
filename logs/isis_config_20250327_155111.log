@@ -1,0 +1,87 @@
+{
+    "status": "succeed",
+    "timestamp": "20250327_155111",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "[SW]\nsystem-view"
+        },
+        {
+            "command": "isis 100",
+            "output": "[SW-isis-100]\nisis 100"
+        },
+        {
+            "command": "net 50.0001.0002.0002.0002.00",
+            "output": "[SW-isis-100]\nnet 50.0001.0002.0002.0002.00"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[SW-isis-100]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[SW-isis-100]\ncost-style wide"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "vlan 150",
+            "output": "[SW-vlan150]\nvlan 150"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface GigabitEthernet1/0/15",
+            "output": "[SW-GigabitEthernet1/0/15]\ninterface GigabitEthernet1/0/15"
+        },
+        {
+            "command": "port access vlan 150",
+            "output": "[SW-GigabitEthernet1/0/15]\nport access vlan 150"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface150",
+            "output": "[SW-Vlan-interface150]\ninterface Vlan-interface150"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[SW-Vlan-interface150]\nisis enable 100"
+        },
+        {
+            "command": "isis circuit-type p2p",
+            "output": "[SW-Vlan-interface150]\nisis circuit-type p2p"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-Vlan-interface150]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[SW-Vlan-interface150]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface150",
+            "output": "[SW-Vlan-interface150]\ninterface Vlan-interface150"
+        },
+        {
+            "command": "ip address 222.168.1.1 24",
+            "output": "[SW-Vlan-interface150]\nip address 222.168.1.1 24"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.070, Alpha 7170\nCopyright (c) 2004-2022 New H3C Technologies Co., Ltd. All rights reserved.\nH3C S6850 uptime is 0 weeks, 0 days, 10 hours, 32 minutes\nLast reboot reason: User reboot\nBoot image: flash:/s6850-cmw710-boot-t7064p15.bin\nBoot image version: 7.1.070, Alpha 7170\n  Compiled Nov 21 2022 11:00:00\nBoot image: flash:/s6850-cmw710-system-t7064p15.bin\nBoot image version: 7.1.070, Alpha 7170\n  Compiled Nov 21 2022 11:00:00\n\nSlot 1:\nS6850 with 2 Processors\nBOARD TYPE: S6850\nDRAM:  512M bytes\nFLASH: 1024M bytes\nPCB 1 Version: VER.C\nBootrom Version: 908\nCPLD 1 Version: 002\nCPLD 2 Version: 002\nRelease Version: H3C S6850\nPatch Version: None\nReboot Cause: User reboot\n[SubSlot 0] 48SFP Plus+4QSFP Plus"
+}

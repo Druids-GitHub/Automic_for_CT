@@ -1,0 +1,132 @@
+{
+    "status": "Failed",
+    "timestamp": "20250402_154512",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<SW>system-view\nSystem View: return to User View with Ctrl+Z."
+        },
+        {
+            "command": "isis 100",
+            "output": "[SW]isis 100\n"
+        },
+        {
+            "command": "network-entity 49.0000.1921.6801.0002.00",
+            "output": "[SW-isis-100]network-entity 49.0000.1921.6801.0002.00\n"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[SW-isis-100]is-level level-2\n"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[SW-isis-100]cost-style wide\n"
+        },
+        {
+            "command": "quit",
+            "output": "[SW-isis-100]quit\n"
+        },
+        {
+            "command": "vlan 10",
+            "output": "[SW-vlan10]\nvlan 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface GigabitEthernet1/0/4",
+            "output": "[SW-GigabitEthernet1/0/4]\ninterface GigabitEthernet1/0/4"
+        },
+        {
+            "command": "port access vlan 10",
+            "output": "[SW-GigabitEthernet1/0/4]\nport access vlan 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface10",
+            "output": "[SW-Vlan-interface10]\ninterface Vlan-interface10"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[SW-Vlan-interface10]\nisis enable 100"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-Vlan-interface10]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[SW-Vlan-interface10]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface10",
+            "output": "[SW-Vlan-interface10]\ninterface Vlan-interface10"
+        },
+        {
+            "command": "ip address 192.168.10.2 24",
+            "output": "[SW-Vlan-interface10]\nip address 192.168.10.2 24"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface LoopBack0",
+            "output": "[SW-LoopBack0]\ninterface LoopBack0"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[SW-LoopBack0]\nisis enable 100"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-LoopBack0]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[SW-LoopBack0]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface LoopBack0",
+            "output": "[SW-LoopBack0]\ninterface LoopBack0"
+        },
+        {
+            "command": "ip address 20.0.0.1 32",
+            "output": "[SW-LoopBack0]\nip address 20.0.0.1 32"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "vlan 20",
+            "output": "[SW-vlan20]\nvlan 20"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface gi1/0/5",
+            "output": "[SW-GigabitEthernet1/0/5]\ninterface gi1/0/5"
+        },
+        {
+            "command": "port access vlan 20",
+            "output": "[SW-GigabitEthernet1/0/5]\nport access vlan 20\n                              ^\n % Unrecognized command found at '^' position."
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.070, Alpha 7170\nCopyright (c) 2004-2022 New H3C Technologies Co., Ltd. All rights reserved.\nH3C S6850 uptime is 0 weeks, 0 days, 5 hours, 8 minutes\nLast reboot reason: User reboot\nBoot image: flash:/s6850-cmw710-boot-t7064p15.bin\nBoot image version: 7.1.070, Alpha 7170\n  Compiled Nov 21 2022 11:00:00\nBoot image: flash:/s6850-cmw710-system-t7064p15.bin\nBoot image version: 7.1.070, Alpha 7170\n  Compiled Nov 21 2022 11:00:00\n\nSlot 1:\nS6850 with 2 Processors\nBOARD TYPE: S6850\nDRAM:  512M bytes\nFLASH: 1024M bytes\nPCB 1 Version: VER.C\nBootrom Version: 908\nCPLD 1 Version: 002\nCPLD 2 Version: 002\nRelease Version: H3C S6850\nPatch Version: None\nReboot Cause: User reboot\n[SubSlot 0] 48SFP Plus+4QSFP Plus",
+    "error_message": "将接口 gi1/0/5 加入VLAN 20 失败"
+}

@@ -1,0 +1,132 @@
+{
+    "status": "Failed",
+    "timestamp": "20250402_150827",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<SW>system-view\nSystem View: return to User View with Ctrl+Z."
+        },
+        {
+            "command": "isis 100",
+            "output": "[SW]isis 100\n"
+        },
+        {
+            "command": "network-entity 49.0000.1921.6801.0002.00",
+            "output": "[SW-isis-100]network-entity 49.0000.1921.6801.0002.00\n"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[SW-isis-100]is-level level-2\n"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[SW-isis-100]cost-style wide\n"
+        },
+        {
+            "command": "quit",
+            "output": "[SW-isis-100]quit\n"
+        },
+        {
+            "command": "vlan 10",
+            "output": "[SW-vlan10]\nvlan 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface GigabitEthernet1/0/4",
+            "output": "[SW-GigabitEthernet1/0/4]\ninterface GigabitEthernet1/0/4"
+        },
+        {
+            "command": "port access vlan 10",
+            "output": "[SW-GigabitEthernet1/0/4]\nport access vlan 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface10",
+            "output": "[SW-Vlan-interface10]\ninterface Vlan-interface10"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[SW-Vlan-interface10]\nisis enable 100"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-Vlan-interface10]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[SW-Vlan-interface10]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface10",
+            "output": "[SW-Vlan-interface10]\ninterface Vlan-interface10"
+        },
+        {
+            "command": "ip address 192.168.10.2 24",
+            "output": "[SW-Vlan-interface10]\nip address 192.168.10.2 24"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface LoopBack0",
+            "output": "[SW-LoopBack0]\ninterface LoopBack0"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[SW-LoopBack0]\nisis enable 100"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-LoopBack0]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[SW-LoopBack0]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface LoopBack0",
+            "output": "[SW-LoopBack0]\ninterface LoopBack0"
+        },
+        {
+            "command": "ip address 20.0.0.1 32",
+            "output": "[SW-LoopBack0]\nip address 20.0.0.1 32"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "vlan 20",
+            "output": "[SW-vlan20]\nvlan 20"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface gi1/0/5",
+            "output": "[SW-GigabitEthernet1/0/5]\ninterface gi1/0/5"
+        },
+        {
+            "command": "port access vlan 20",
+            "output": "[SW-GigabitEthernet1/0/5]\nport access vlan 20\n                              ^\n % Unrecognized command found at '^' position."
+        }
+    ],
+    "system_info": {},
+    "error_message": "将接口 gi1/0/5 加入VLAN 20 失败，可能是接口类型不支持或VLAN不存在"
+}

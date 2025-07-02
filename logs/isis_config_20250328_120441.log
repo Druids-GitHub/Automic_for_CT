@@ -1,0 +1,95 @@
+{
+    "status": "succeed",
+    "timestamp": "20250328_120441",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "[RoCE-storage]\nsystem-view"
+        },
+        {
+            "command": "interface loopback11",
+            "output": "[RoCE-storage-LoopBack11]\ninterface loopback11"
+        },
+        {
+            "command": "isis enable 500",
+            "output": "[RoCE-storage-LoopBack11]\nisis enable 500"
+        },
+        {
+            "command": "isis ipv6 enable 500",
+            "output": "[RoCE-storage-LoopBack11]\nisis ipv6 enable 500"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[RoCE-storage-LoopBack11]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 1",
+            "output": "[RoCE-storage-LoopBack11]\nisis cost 1"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface loopback11",
+            "output": "[RoCE-storage-LoopBack11]\ninterface loopback11"
+        },
+        {
+            "command": "ip address 132.168.1.1 24",
+            "output": "[RoCE-storage-LoopBack11]\nip address 132.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 2925::1 64",
+            "output": "[RoCE-storage-LoopBack11]\nipv6 address 2925::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "vlan 110",
+            "output": "[RoCE-storage-vlan110]\nvlan 110"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface hge1/0/56",
+            "output": "[RoCE-storage-HundredGigE1/0/56]\ninterface hge1/0/56"
+        },
+        {
+            "command": "port access vlan 110",
+            "output": "[RoCE-storage-HundredGigE1/0/56]\nport access vlan 110"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface110",
+            "output": "[RoCE-storage-Vlan-interface110]\ninterface Vlan-interface110"
+        },
+        {
+            "command": "isis enable 500",
+            "output": "[RoCE-storage-Vlan-interface110]\nisis enable 500"
+        },
+        {
+            "command": "isis circuit-type p2p",
+            "output": "[RoCE-storage-Vlan-interface110]\nisis circuit-type p2p"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[RoCE-storage-Vlan-interface110]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 1",
+            "output": "[RoCE-storage-Vlan-interface110]\nisis cost 1"
+        },
+        {
+            "command": "quit",
+            "output": "[RoCE-storage]\nquit"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.070, Release 6710P03\nCopyright (c) 2004-2023 New H3C Technologies Co., Ltd. All rights reserved.\nH3C S6850-56HF uptime is 2 weeks, 2 days, 0 hours, 53 minutes\nLast reboot reason : User reboot\n\nBoot image: flash:/s9850_6850-cmw710-boot-r6710p03.bin\nBoot image version: 7.1.070, Release 6710P03\n  Compiled May 05 2023 11:00:00\nSystem image: flash:/s9850_6850-cmw710-system-r6710p03.bin\nSystem image version: 7.1.070, Release 6710P03\n  Compiled May 05 2023 11:00:00\n\n\nMPU(M) Slot 1:\nUptime is 2 weeks,2 days,0 hours,53 minutes\nH3C S6850-56HF MPU(M) with 1 C3558 Processor(s)\nBOARD TYPE:         S6850-56HF\nDRAM:               8192M bytes\nFLASH:              3616M bytes\nNVRAM:              0K bytes\nPCB 1 Version:      VER.A\nPCB 2 Version:      VER.A\nBasic    BootWare Version: 300\nExtended BootWare Version: 300\nCPLD 1 Version:     004\nCPLD 2 Version:     004\nCPLD 3 Version:     001\nRelease Version:    H3C S6850-56HF-6710P03\nPatch Version:      None\nReboot Cause:       UserReboot\n[SubSlot 0] 48SFP28 + 8QSFP28"
+}

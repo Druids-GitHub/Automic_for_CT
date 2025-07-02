@@ -1,0 +1,119 @@
+{
+    "status": "Failed",
+    "timestamp": "20250331_134049",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "system-view\nSystem View: return to User View with Ctrl+Z.\n[SW]"
+        },
+        {
+            "command": "isis 600",
+            "output": "[SW-isis-600]\nisis 600"
+        },
+        {
+            "command": "network-entity 89.4134.0002.0002.0002.00",
+            "output": "[SW-isis-600]\nnetwork-entity 89.4134.0002.0002.0002.00"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[SW-isis-600]\nis-level level-2"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[SW-isis-600]\ncost-style wide"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[SW-isis-600-ipv6]\naddress-family ipv6 unicast"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[SW-isis-600-ipv6]\nmulti-topology"
+        },
+        {
+            "command": "quit",
+            "output": "[SW-isis-600]\nquit"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[SW-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[SW-LoopBack12]\nisis enable 600"
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[SW-LoopBack12]\nisis ipv6 enable 600"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-LoopBack12]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 1",
+            "output": "[SW-LoopBack12]\nisis cost 1"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[SW-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "ip address 2.2.2.2 32",
+            "output": "[SW-LoopBack12]\nip address 2.2.2.2 32"
+        },
+        {
+            "command": "ipv6 address 2::2 128",
+            "output": "[SW-LoopBack12]\nipv6 address 2::2 128"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "vlan 111",
+            "output": "[SW-vlan111]\nvlan 111"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface ge1/0/1",
+            "output": "[SW-GigabitEthernet1/0/1]\ninterface ge1/0/1"
+        },
+        {
+            "command": "port access vlan 111",
+            "output": "[SW-GigabitEthernet1/0/1]\nport access vlan 111"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Vlan-interface111",
+            "output": "[SW-Vlan-interface111]\ninterface Vlan-interface111"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[SW-Vlan-interface111]\nisis enable 600"
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[SW-Vlan-interface111]\nisis ipv6 enable 600"
+        },
+        {
+            "command": "isis circuit-type p2p2",
+            "output": "[SW-Vlan-interface111]\nisis circuit-type p2p2\n                                        ^\n % Unrecognized command found at '^' position."
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.070, Alpha 7170\nCopyright (c) 2004-2022 New H3C Technologies Co., Ltd. All rights reserved.\nH3C S6850 uptime is 0 weeks, 0 days, 2 hours, 15 minutes\nLast reboot reason: User reboot\nBoot image: flash:/s6850-cmw710-boot-t7064p15.bin\nBoot image version: 7.1.070, Alpha 7170\n  Compiled Nov 21 2022 11:00:00\nBoot image: flash:/s6850-cmw710-system-t7064p15.bin\nBoot image version: 7.1.070, Alpha 7170\n  Compiled Nov 21 2022 11:00:00\n\nSlot 1:\nS6850 with 2 Processors\nBOARD TYPE: S6850\nDRAM:  512M bytes\nFLASH: 1024M bytes\nPCB 1 Version: VER.C\nBootrom Version: 908\nCPLD 1 Version: 002\nCPLD 2 Version: 002\nRelease Version: H3C S6850\nPatch Version: None\nReboot Cause: User reboot\n[SubSlot 0] 48SFP Plus+4QSFP Plus"
+}

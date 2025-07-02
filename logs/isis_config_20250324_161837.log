@@ -1,0 +1,6 @@
+{
+    "status": "Failed",
+    "timestamp": "20250324_161837",
+    "result": [],
+    "system_info": "执行失败：\nPattern not detected: ']' in output.\n\nThings you might try to fix this:\n1. Explicitly set your pattern using the expect_string argument.\n2. Increase the read_timeout to a larger value.\n\nYou can also look at the Netmiko session_log or debug log for more information.\n\n"
+}

@@ -1,0 +1,53 @@
+{
+    "status": "Failed",
+    "timestamp": "20250618_161457",
+    "result": {
+        "PE1": [
+            "<PE1>system-view\nSystem View: return to User View with Ctrl+Z.",
+            "[PE1]dhcp enable\n",
+            "[PE1]dhcp server forbidden-ip 192.168.1.1\n",
+            "[PE1]dhcp server forbidden-ip test\n^\n % Wrong parameter found at '^' position."
+        ],
+        "error_message": {
+            "PE1": "执行命令 'dhcp server forbidden-ip test' 失败"
+        }
+    },
+    "system_info": {
+        "PE1": [
+            "<PE1>",
+            "<PE1>",
+            "<PE1>display version",
+            "H3C Comware Software, Version 7.1.070, Release 6715",
+            "Copyright (c) 2004-2024 New H3C Technologies Co., Ltd. All rights reserved.",
+            "H3C S6850-56HF uptime is 9 weeks, 2 days, 1 hour, 54 minutes",
+            "Last reboot reason : User reboot",
+            "Boot image: flash:/s9850_6850-cmw710-boot-r6715.bin",
+            "Boot image version: 7.1.070, Release 6715",
+            "  Compiled Feb 02 2024 11:00:00",
+            "System image: flash:/s9850_6850-cmw710-system-r6715.bin",
+            "System image version: 7.1.070, Release 6715",
+            "  Compiled Feb 02 2024 11:00:00",
+            "Patch image(s) list:",
+            "  flash:/S9850_6850-CMW710-R6715HS04.bin, version: R6715HS04",
+            "    Compiled Feb 02 2024 11:00:00",
+            "MPU(M) Slot 1:",
+            "Uptime is 9 weeks,2 days,1 hour,54 minutes",
+            "H3C S6850-56HF MPU(M) with 1 Processor(s)",
+            "BOARD TYPE:         S6850-56HF",
+            "DRAM:               8192M bytes",
+            "FLASH:              3616M bytes",
+            "NVRAM:              0K bytes",
+            "PCB 1 Version:      VER.A",
+            "PCB 2 Version:      VER.A",
+            "Basic    BootWare Version: 309",
+            "Extended BootWare Version: 309",
+            "CPLD 1 Version:     004",
+            "CPLD 2 Version:     004",
+            "CPLD 3 Version:     001",
+            "Release Version:    H3C S6850-56HF-6715",
+            "Patch Version:      R6715HS04",
+            "Reboot Cause:       UserReboot",
+            "[SubSlot 0] 48SFP28 + 8QSFP28"
+        ]
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "status": "Failed",
+    "timestamp": "20250328_144654",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<RoCE-storage>system-view\nSystem View: return to User View with Ctrl+Z.\n[RoCE-storage]"
+        },
+        {
+            "command": "isis 600",
+            "output": "isis 600\n[RoCE-storage-isis-600]"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "is-level level-2\n[RoCE-storage-isis-600]"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "cost-style wide\n[RoCE-storage-isis-600]"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[RoCE-storage-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis enable 600"
+        },
+        {
+            "command": "isis ipv6 enable 600",
+            "output": "[RoCE-storage-LoopBack12]\nisis ipv6 enable 600\nIPv6 is not enabled for the process."
+        }
+    ],
+    "system_info": ""
+}

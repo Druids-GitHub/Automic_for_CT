@@ -1,0 +1,88 @@
+{
+    "status": "Failed",
+    "timestamp": "20250401_171305",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "<SW>system-view\nSystem View: return to User View with Ctrl+Z."
+        },
+        {
+            "command": "isis 100",
+            "output": "[SW]isis 100\n"
+        },
+        {
+            "command": "network-entity 49.0000.1921.6800.2002.00",
+            "output": "[SW-isis-100]network-entity 49.0000.1921.6800.2002.00\n"
+        },
+        {
+            "command": "is-level level-2",
+            "output": "[SW-isis-100]is-level level-2\n"
+        },
+        {
+            "command": "cost-style wide",
+            "output": "[SW-isis-100]cost-style wide\n"
+        },
+        {
+            "command": "address-family ipv6 unicast",
+            "output": "[SW-isis-100]address-family ipv6 unicast\n"
+        },
+        {
+            "command": "multi-topology",
+            "output": "[SW-isis-100-ipv6]multi-topology\n"
+        },
+        {
+            "command": "quit",
+            "output": "[SW-isis-100-ipv6]quit\n"
+        },
+        {
+            "command": "quit",
+            "output": "[SW-isis-100]quit\n"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[SW-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "isis enable 100",
+            "output": "[SW-LoopBack12]\nisis enable 100"
+        },
+        {
+            "command": "isis ipv6 enable 100",
+            "output": "[SW-LoopBack12]\nisis ipv6 enable 100"
+        },
+        {
+            "command": "isis circuit-level level-2",
+            "output": "[SW-LoopBack12]\nisis circuit-level level-2"
+        },
+        {
+            "command": "isis cost 10",
+            "output": "[SW-LoopBack12]\nisis cost 10"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface loopback12",
+            "output": "[SW-LoopBack12]\ninterface loopback12"
+        },
+        {
+            "command": "ip address 192.168.2.2 32",
+            "output": "[SW-LoopBack12]\nip address 192.168.2.2 32"
+        },
+        {
+            "command": "ipv6 address 1::1 128",
+            "output": "[SW-LoopBack12]\nipv6 address 1::1 128"
+        },
+        {
+            "command": "quit",
+            "output": "[SW]\nquit"
+        },
+        {
+            "command": "interface Ge1/0/10",
+            "output": "[SW-GigabitEthernet1/0/10]\ninterface Ge1/0/10"
+        }
+    ],
+    "system_info": null,
+    "error_message": "执行命令 'isis enable 100' 失败，设备返回了错误信息"
+}

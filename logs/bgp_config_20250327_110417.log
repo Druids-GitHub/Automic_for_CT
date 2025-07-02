@@ -1,0 +1,23 @@
+{
+    "status": "Failed",
+    "timestamp": "20250327_110417",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "system-view\nSystem View: return to User View with Ctrl+Z.\n[R]"
+        },
+        {
+            "command": "bgp 100",
+            "output": "bgp 100\n[R-bgp-default]"
+        },
+        {
+            "command": "peer 10.0.0.2 as-number 200",
+            "output": "peer 10.0.0.2 as-number 200\n[R-bgp-default]"
+        },
+        {
+            "command": "peer 10.0.0.2 connect-interface LoopBack0",
+            "output": "peer 10.0.0.2 connect-interface LoopBack0\n                                               ^\n % Wrong parameter found at '^' position.\n[R-bgp-default]"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 7 hours, 2 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}

@@ -1,0 +1,43 @@
+{
+    "status": "succeed",
+    "timestamp": "20250326_092845",
+    "result": [
+        {
+            "command": "system-view",
+            "output": "system-view\nSystem View: return to User View with Ctrl+Z.\n[R]"
+        },
+        {
+            "command": "interface GigabitEthernet0/1",
+            "output": "[R-GigabitEthernet0/1]\ninterface GigabitEthernet0/1"
+        },
+        {
+            "command": "ip address 192.168.1.1 24",
+            "output": "[R-GigabitEthernet0/1]\nip address 192.168.1.1 24"
+        },
+        {
+            "command": "ipv6 address 2001::1 64",
+            "output": "[R-GigabitEthernet0/1]\nipv6 address 2001::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[R]\nquit"
+        },
+        {
+            "command": "interface GigabitEthernet0/2",
+            "output": "[R-GigabitEthernet0/2]\ninterface GigabitEthernet0/2"
+        },
+        {
+            "command": "ip address 192.168.2.1 24",
+            "output": "[R-GigabitEthernet0/2]\nip address 192.168.2.1 24"
+        },
+        {
+            "command": "ipv6 address 2002::1 64",
+            "output": "[R-GigabitEthernet0/2]\nipv6 address 2002::1 64"
+        },
+        {
+            "command": "quit",
+            "output": "[R]\nquit"
+        }
+    ],
+    "system_info": "display version\nH3C Comware Software, Version 7.1.064, Release 0427P22\nCopyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.\nH3C MSR36-20 uptime is 0 weeks, 0 days, 0 hours, 13 minutes\nLast reboot reason: User reboot\nBoot image: flash:/msr36-cmw710-boot-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\nBoot image: flash:/msr36-cmw710-system-r0424p22.bin\nBoot image version: 7.1.064, Release 0427P22\n  Compiled Mar 16 2021 15:00:00\n\nCPU ID: 0x2\n384M bytes DDR3 SDRAM Memory\n1024M bytes Flash Memory\nPCB               Version:  2.0\nCPLD              Version:  1.0\nBasic    BootWare Version:  1.42\nExtended BootWare Version:  1.42"
+}
