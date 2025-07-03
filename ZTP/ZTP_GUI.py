@@ -620,7 +620,7 @@ class ZTPGUI(tk.Tk):
                 messagebox.showinfo("创建目录", f"已创建TFTP根目录: {self.tftp_root_var.get()}")
                 
             messagebox.showinfo("配置已保存", "网络配置已应用")
-            self.log_message(f"INFO - 网络配置已更新: 服务器IP={self.server_ip_var.get()}, 网关={self.gateway_var.get()}")
+            self.log_message(f"INFO - 网络配置已更新: 服务器IP={self.server_ip_var.get()}, 网关={self.gateway_var.get()}, DHCP网段={self.start_ip_var.get()}-{self.end_ip_var.get()}")
         except Exception as e:
             messagebox.showerror("保存失败", f"配置应用失败: {str(e)}")
 
@@ -719,7 +719,6 @@ class ZTPGUI(tk.Tk):
                 self.force_release_port(69)
             
             # 检查端口是否可用
-            import socket
             ports_to_check = [69, 67]  # TFTP和DHCP端口
             unavailable_ports = []
             
@@ -748,7 +747,12 @@ class ZTPGUI(tk.Tk):
             
             # 更新UI状态
             self.services_running = True
-            self.start_button.config(text="停止ZTP服务")
+            self.start_button.config(
+                text="停止ZTP服务",
+                bg="#c62828",  # 红色背景表示停止功能
+                fg="white",    # 明确指定白色文字
+                state=tk.NORMAL  # 确保按钮是启用状态
+            )
             self.status_var.set("服务运行中")
             
             # 禁用配置选项卡
@@ -804,7 +808,12 @@ class ZTPGUI(tk.Tk):
                 self.ztp_manager = None
             
             # 更新UI状态
-            self.start_button.config(text="启动ZTP服务")
+            self.start_button.config(
+                text="启动ZTP服务",
+                bg="#2e7d32",  # 恢复绿色背景
+                fg="white",    # 保持白色文字
+                state=tk.NORMAL  # 确保按钮处于启用状态
+)
             self.status_var.set("服务已停止")
             
             # 启用配置选项卡
@@ -821,55 +830,102 @@ class ZTPGUI(tk.Tk):
     def run_services(self):
         """在线程中运行ZTP服务"""
         try:
-            # 获取当前接口IP
+            # 获取当前接口IP和用户设置
             server_ip = self.server_ip_var.get()
+            start_ip = self.start_ip_var.get()
+            end_ip = self.end_ip_var.get()
+            gateway = self.gateway_var.get()
+            subnet_mask = self.subnet_var.get()
+            tftp_server_addr = self.tftp_server_var.get()
+            tftp_root = self.tftp_root_var.get()
+            default_config = self.default_config_var.get()
             
-            # 确保DHCP配置使用相同网段
-            ip_parts = server_ip.split('.')
-            network_prefix = '.'.join(ip_parts[0:3])
+            # 创建全新的配置对象，完全替换默认配置
+            self.config_data = {
+                "dhcp_server": {
+                    "enabled": True,
+                    "server_ip": server_ip,
+                    "start_ip": start_ip,
+                    "end_ip": end_ip,
+                    "subnet_mask": subnet_mask,
+                    "gateway": gateway,
+                    "dns_servers": ["8.8.8.8", "114.114.114.114"],
+                    "lease_time": 86400,
+                    "options": {
+                        "66": tftp_server_addr,  # TFTP服务器地址
+                        "67": default_config  # 配置文件路径
+                    }
+                },
+                "tftp_server": {
+                    "enabled": True,
+                    "server_ip": "0.0.0.0",  # TFTP服务器绑定到所有接口
+                    "root_dir": tftp_root
+                },
+                "device_mapping": self.config_data.get("device_mapping", {})
+            }
             
-            # 强制更新网段相关配置
-            self.config_data["dhcp_server"]["server_ip"] = server_ip
-            self.config_data["dhcp_server"]["gateway"] = server_ip
-            self.config_data["dhcp_server"]["start_ip"] = f"{network_prefix}.100"
-            self.config_data["dhcp_server"]["end_ip"] = f"{network_prefix}.200"
-            self.config_data["dhcp_server"]["options"]["66"] = server_ip
+            # 记录最终使用的配置
+            self.log_message(f"INFO - 启动服务使用配置: 服务器IP={server_ip}, 网关={gateway}")
+            self.log_message(f"INFO - DHCP地址池: {start_ip}-{end_ip}")
+            self.log_message(f"INFO - TFTP服务器: {tftp_server_addr}, 根目录: {tftp_root}")
             
             # 确保TFTP根目录使用绝对路径
-            tftp_root = self.tftp_root_var.get()
             if not os.path.isabs(tftp_root):
-                # 如果是相对路径，转换为基于当前EXE所在目录的绝对路径
-                if getattr(sys, 'frozen', False):
-                    base_path = os.path.dirname(sys.executable)
-                else:
-                    base_path = os.path.dirname(os.path.abspath(__file__))
-                tftp_root = os.path.join(base_path, tftp_root)
-                self.config_data["tftp_server"]["root_dir"] = tftp_root
-                    
-            # 确保目录存在
-            os.makedirs(tftp_root, exist_ok=True)
-            self.log_message(f"INFO - 使用TFTP根目录: {tftp_root}")
+                abs_path = os.path.abspath(tftp_root)
+                self.config_data["tftp_server"]["root_dir"] = abs_path
+                self.log_message(f"INFO - 转换TFTP根目录为绝对路径: {abs_path}")
             
-            # 设置TFTP服务器绑定到特定IP而非0.0.0.0
-            self.config_data["tftp_server"]["server_ip"] = server_ip  # 使用具体IP
+            # 确保TFTP目录存在
+            if not os.path.exists(self.config_data["tftp_server"]["root_dir"]):
+                os.makedirs(self.config_data["tftp_server"]["root_dir"], exist_ok=True)
+                self.log_message(f"INFO - 创建TFTP根目录: {self.config_data['tftp_server']['root_dir']}")
             
-            # 检查引导文件是否存在
-            bootfile = self.config_data["dhcp_server"]["options"]["67"]
-            bootfile_path = os.path.join(tftp_root, bootfile)
-            if not os.path.exists(bootfile_path):
-                self.log_message(f"WARNING - 引导文件 {bootfile} 不存在于TFTP根目录")
-                    
-            # 创建ZTP管理器
+            # 禁用网络配置和设备映射选项卡
+            self.notebook.tab(0, state='disabled')
+            self.notebook.tab(1, state='disabled')
+            
+            # 更新启动/停止按钮状态
+            # self.start_button.config(state=tk.DISABLED)
+            
+            # 在新线程中启动ZTP服务
+            self.ztp_thread = threading.Thread(target=self._run_ztp_service)
+            self.ztp_thread.daemon = True
+            self.ztp_thread.start()
+            
+            # 提示用户
+            messagebox.showinfo("服务已启动", "ZTP服务已经启动，可以在日志选项卡中查看状态")
+            
+        except Exception as e:
+            messagebox.showerror("启动失败", f"启动ZTP服务失败: {str(e)}")
+            self.log_message(f"ERROR - 服务运行时出错: {str(e)}")
+
+    def _run_ztp_service(self):
+        """实际启动ZTP服务的内部方法"""
+        try:
+            # 创建ZTP管理器实例
             self.ztp_manager = ZTPManager(self.config_data)
             
             # 启动服务
             self.ztp_manager.start_services()
             
+            # 启用启动按钮以便可以停止服务
+            self.after(0, lambda: self.start_button.config(state=tk.NORMAL))
+            
         except Exception as e:
-            self.log_message(f"ERROR - 服务运行时出错: {str(e)}")
-            # 如果出错，才自动停止服务
-            if self.services_running:
-                self.after(0, self.stop_services)
+            # 记录错误并在GUI中显示
+            self.log_message(f"ERROR - 启动ZTP服务失败: {str(e)}")
+            
+            # 恢复GUI状态
+            self.after(0, lambda: (
+                self.start_button.config(text="启动ZTP服务", state=tk.NORMAL),
+                self.status_var.set("服务启动失败"),
+                self.notebook.tab(0, state='normal'),
+                self.notebook.tab(1, state='normal'),
+                messagebox.showerror("服务失败", f"ZTP服务启动失败: {str(e)}")
+            ))
+            
+            # 标记服务为非运行状态
+            self.services_running = False
 
     def update_firewall_rules(self):
         """添加防火墙规则"""

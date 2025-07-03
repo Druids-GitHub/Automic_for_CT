@@ -27,39 +27,25 @@ import subprocess
 DEFAULT_CONFIG = {
     "dhcp_server": {
         "enabled": True,
-        "server_ip": "192.168.55.1",
-        "start_ip": "192.168.55.100",
-        "end_ip": "192.168.55.200",
+        "server_ip": "0.0.0.0",  # 使用通用IP
+        "start_ip": "0.0.0.0",   # 启动时会自动更新
+        "end_ip": "0.0.0.0",     # 启动时会自动更新
         "subnet_mask": "255.255.255.0",
-        "gateway": "192.168.55.1",
+        "gateway": "0.0.0.0",    # 使用通用IP
         "dns_servers": ["8.8.8.8", "114.114.114.114"],
         "lease_time": 86400,  # 24小时
         "options": {
-            "66": "192.168.55.1",  # TFTP服务器地址
-            "67": "startup.cfg"   # 配置文件路径
+            "66": "0.0.0.0",     # TFTP服务器地址
+            "67": "startup.cfg"  # 配置文件路径
         }
     },
     "tftp_server": {
         "enabled": True,
-        "server_ip": "192.168.55.1",
+        "server_ip": "0.0.0.0",  # 使用通用IP
         "root_dir": "./tftpboot"
     },
     "device_mapping": {
-        # MAC地址映射
-        "00:11:22:33:44:55": {
-            "hostname": "SW-ACCESS-01",
-            "config_file": "SW-ACCESS-01.cfg"
-        },
-        # Client ID映射（格式：client_id:xxxxxx）
-        "client_id:abc123def456": {
-            "hostname": "SW-ACCESS-02",
-            "config_file": "SW-ACCESS-02.cfg"
-        },
-        # 序列号映射（格式：sn:xxxxxx）
-        "sn:210235A1234": {
-            "hostname": "SW-CORE-01",
-            "config_file": "SW-CORE-01.cfg"
-        }
+        # 保持现有映射或清空
     }
 }
 
@@ -622,6 +608,13 @@ class SocketDHCPServer:
             chaddr = data[28:34]
             mac_address = ':'.join(f'{b:02x}' for b in chaddr)
             
+            # 提取giaddr字段 (中继代理IP地址)
+            giaddr = socket.inet_ntoa(data[24:28])
+            is_relayed = (giaddr != '0.0.0.0')
+            
+            if is_relayed:
+                self.logger.info(f"收到中继请求，中继代理IP: {giaddr}")
+            
             # 提取DHCP选项
             options = self.parse_dhcp_options(data[240:])
             if not options or self.OPT_MSG_TYPE not in options:
@@ -631,11 +624,11 @@ class SocketDHCPServer:
             self.logger.debug(f"DHCP消息类型: {msg_type}, MAC: {mac_address}, XID: {xid}")
             
             if msg_type == self.DHCP_DISCOVER:
-                self.logger.info(f"收到DHCP DISCOVER: MAC={mac_address}")
-                self.send_dhcp_offer(sock, data, chaddr, xid)
+                self.logger.info(f"收到DHCP DISCOVER: MAC={mac_address}{' (通过中继)' if is_relayed else ''}")
+                self.send_dhcp_offer(sock, data, chaddr, xid, giaddr if is_relayed else None)
             elif msg_type == self.DHCP_REQUEST:
-                self.logger.info(f"收到DHCP REQUEST: MAC={mac_address}")
-                self.send_dhcp_ack(sock, data, chaddr, xid)
+                self.logger.info(f"收到DHCP REQUEST: MAC={mac_address}{' (通过中继)' if is_relayed else ''}")
+                self.send_dhcp_ack(sock, data, chaddr, xid, giaddr if is_relayed else None)
             elif msg_type == self.DHCP_RELEASE:
                 self.logger.info(f"收到DHCP RELEASE: MAC={mac_address}")
                 self.release_ip(mac_address)
@@ -741,7 +734,7 @@ class SocketDHCPServer:
         self.logger.error(f"IP地址池已耗尽，无法为MAC {mac_address}分配IP")
         return None
     
-    def create_dhcp_packet(self, op, xid, chaddr, yiaddr, options_list):
+    def create_dhcp_packet(self, op, xid, chaddr, yiaddr, options_list, giaddr=None):
         """创建DHCP数据包"""
         packet = bytearray(240)  # 初始化包头
         
@@ -771,8 +764,11 @@ class SocketDHCPServer:
         server_ip = ipaddress.IPv4Address(self.config["server_ip"]).packed
         packet[20:24] = server_ip
         
-        # giaddr (中继代理IP)
-        packet[24:28] = b'\x00\x00\x00\x00'
+        # giaddr (中继代理IP) - 修改为使用传入的giaddr
+        if giaddr and giaddr != '0.0.0.0':
+            packet[24:28] = ipaddress.IPv4Address(giaddr).packed
+        else:
+            packet[24:28] = b'\x00\x00\x00\x00'
         
         # chaddr (客户端硬件地址)
         packet[28:28+len(chaddr)] = chaddr
@@ -825,7 +821,7 @@ class SocketDHCPServer:
         # 将选项添加到数据包
         return packet + options
     
-    def send_dhcp_offer(self, sock, request, chaddr, xid):
+    def send_dhcp_offer(self, sock, request, chaddr, xid, giaddr=None):
         """发送DHCP OFFER响应"""
         # 将MAC地址转换为可读格式用于日志
         mac_address = ':'.join(f'{b:02x}' for b in chaddr)
@@ -833,7 +829,7 @@ class SocketDHCPServer:
         # 提取设备标识符
         client_id, sn = self.extract_device_identifiers(request, mac_address)
         
-        # 获取设备映射信息 - 添加这行修复错误
+        # 获取设备映射信息
         device_info = self.get_device_mapping(mac_address, client_id, sn)
         
         # 分配IP地址时传入所有标识符
@@ -876,19 +872,37 @@ class SocketDHCPServer:
         if dns_packed:
             options.append((self.OPT_DNS_SERVER, dns_packed))
         
-        # 创建DHCP OFFER数据包
-        offer_packet = self.create_dhcp_packet(2, xid, chaddr, yiaddr, options)
+        # 创建DHCP OFFER数据包 - 传递giaddr参数
+        offer_packet = self.create_dhcp_packet(2, xid, chaddr, yiaddr, options, giaddr)
         
         # 设置广播标志(某些设备需要)
         offer_packet[10:12] = b'\x80\x00'
         
-        # 发送DHCP OFFER - 使用明确的广播地址
         try:
-            sock.sendto(offer_packet, ('255.255.255.255', 68))
-            self.logger.info(f"发送DHCP OFFER: IP={yiaddr} -> MAC={mac_address}")
+            if giaddr and giaddr != '0.0.0.0':
+                # 创建新的套接字专门用于向中继代理发送数据
+                relay_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                try:
+                    # 设置套接字选项
+                    relay_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                    relay_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    
+                    # 绑定到任意地址和任意端口
+                    relay_sock.bind(('0.0.0.0', 0))
+                    
+                    # 发送DHCP响应到中继代理
+                    self.logger.info(f"通过中继代理 {giaddr}:67 发送DHCP OFFER")
+                    relay_sock.sendto(offer_packet, (giaddr, 67))
+                finally:
+                    # 确保套接字被关闭
+                    relay_sock.close()
+            else:
+                # 普通请求使用广播和原套接字
+                sock.sendto(offer_packet, ('255.255.255.255', 68))
+                self.logger.info(f"发送DHCP OFFER: IP={yiaddr} -> MAC={mac_address}")
         except Exception as e:
             self.logger.error(f"发送DHCP OFFER失败: {str(e)}")
-            # 尝试使用另一种方式
+            # 尝试备用发送方式
             try:
                 # 尝试使用子网广播
                 ip_parts = self.config["server_ip"].split('.')
@@ -898,12 +912,12 @@ class SocketDHCPServer:
             except Exception as e2:
                 self.logger.error(f"备用发送方法也失败: {str(e2)}")
     
-    def send_dhcp_ack(self, sock, request, chaddr, xid):
+    def send_dhcp_ack(self, sock, request, chaddr, xid, giaddr=None):
         """发送DHCP ACK响应"""
         # 将MAC地址转换为可读格式用于日志
         mac_address = ':'.join(f'{b:02x}' for b in chaddr)
         
-        # 提取设备标识符 - 添加这部分
+        # 提取设备标识符
         client_id, sn = self.extract_device_identifiers(request, mac_address)
         device_info = self.get_device_mapping(mac_address, client_id, sn)
         
@@ -913,7 +927,7 @@ class SocketDHCPServer:
             self.logger.error(f"未找到MAC {mac_address}的分配IP")
             return
         
-        # 更新标识符映射 - 添加这部分
+        # 更新标识符映射
         identifiers = {"mac": mac_address}
         if client_id:
             identifiers["client_id"] = client_id
@@ -954,15 +968,42 @@ class SocketDHCPServer:
         if dns_packed:
             options.append((self.OPT_DNS_SERVER, dns_packed))
         
-        # 创建DHCP ACK数据包
-        ack_packet = self.create_dhcp_packet(2, xid, chaddr, yiaddr, options)
+        # 创建DHCP ACK数据包 - 传递giaddr参数
+        ack_packet = self.create_dhcp_packet(2, xid, chaddr, yiaddr, options, giaddr)
         
-        # 发送DHCP ACK
         try:
-            sock.sendto(ack_packet, ('<broadcast>', 68))
-            self.logger.info(f"发送DHCP ACK: IP={yiaddr} -> MAC={mac_address}")
+            # 根据giaddr决定发送目的地
+            if giaddr and giaddr != '0.0.0.0':
+                # 创建新的套接字专门用于向中继代理发送数据
+                relay_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                try:
+                    # 设置套接字选项
+                    relay_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                    relay_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    
+                    # 绑定到任意地址和任意端口
+                    relay_sock.bind(('0.0.0.0', 0))
+                    
+                    # 发送到中继代理
+                    self.logger.info(f"通过中继代理 {giaddr}:67 发送DHCP ACK")
+                    relay_sock.sendto(ack_packet, (giaddr, 67))
+                finally:
+                    relay_sock.close()
+            else:
+                # 普通请求使用广播
+                sock.sendto(ack_packet, ('<broadcast>', 68))
+                self.logger.info(f"发送DHCP ACK: IP={yiaddr} -> MAC={mac_address}")
         except Exception as e:
             self.logger.error(f"发送DHCP ACK失败: {str(e)}")
+            # 尝试备用发送方式...
+            try:
+                # 尝试使用子网广播
+                ip_parts = self.config["server_ip"].split('.')
+                broadcast = f"{ip_parts[0]}.{ip_parts[1]}.{ip_parts[2]}.255"
+                sock.sendto(ack_packet, (broadcast, 68))
+                self.logger.info(f"使用子网广播发送DHCP ACK: {broadcast}")
+            except Exception as e2:
+                self.logger.error(f"备用发送方法也失败: {str(e2)}")
 
     def get_device_mapping(self, mac_address, client_id=None, sn=None):
         """根据多种标识符查找设备映射"""
