@@ -1,0 +1,13 @@
+{# 接口基础配置模板 #}
+
+{# 配置所有接口（包括物理接口和环回口）#}
+{% for intf in interfaces %}
+interface {{ intf.name }}
+ {% if intf.ip_address and intf.mask %}
+ ip address {{ intf.ip_address }} {{ intf.mask }}
+ {% endif %}
+ {% if intf.ipv6_address and intf.ipv6_prefix %}
+ ipv6 address {{ intf.ipv6_address }}/{{ intf.ipv6_prefix }}
+ {% endif %}
+ quit
+{% endfor %}

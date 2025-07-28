@@ -1,0 +1,38 @@
+{# OSPF配置模板 - 仅包含OSPF相关配置 #}
+
+{# 配置IPv4 OSPF全局参数 #}
+{% if ospf_stack in ['IPv4', 'IPv4&IPv6'] -%}
+ospf {{ process_id }} router-id {{ router_id }}
+ quit
+{% endif -%}
+
+{# 配置IPv6 OSPF (OSPFv3)全局参数 #}
+{% if ospf_stack in ['IPv6', 'IPv4&IPv6'] -%}
+ospfv3 {{ process_id }}
+ router-id {{ router_id }}
+ quit
+{% endif -%}
+
+{# 配置所有接口的OSPF参数 #}
+{% for intf in interfaces -%}
+interface {{ intf.name }}
+{% if ospf_stack in ['IPv4', 'IPv4&IPv6'] %}
+ ospf {{ process_id }} area {{ area }}
+{% if intf.network_type and not intf.is_loopback %}
+ ospf network-type {{ intf.network_type }}
+{% endif -%}
+{% if intf.ipv4_cost %}
+ ospf cost {{ intf.ipv4_cost }}
+{% endif -%}
+{% endif -%}
+{% if ospf_stack in ['IPv6', 'IPv4&IPv6'] %}
+ ospfv3 {{ process_id }} area {{ area }}
+{% if intf.network_type and not intf.is_loopback %}
+ ospfv3 network-type {{ intf.network_type }}
+{% endif -%}
+{% if intf.ipv6_cost %}
+ ospfv3 cost {{ intf.ipv6_cost }}
+{% endif -%}
+{% endif %}
+ quit
+{% endfor -%}
