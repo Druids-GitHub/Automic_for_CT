@@ -266,8 +266,7 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
             
         # 处理VXLAN连通性测试结果
         if vxlan_connectivity is not None:
-            if isinstance(vxlan_connectivity, dict):
-                result_dict["vxlan_connectivity"] = vxlan_connectivity
+            result_dict["vxlan_connectivity"] = vxlan_connectivity
 
         # print(f"最终result_dict的键: {list(result_dict.keys())}")
         # if 'ping_connectivity' in result_dict:

@@ -792,7 +792,7 @@ def config_dual_devices_vxlan(dual_params):
                         
                     else:
                         print("\nVXLAN隧道状态为DOWN，跳过连通性测试")
-                        vxlan_connectivity_status = "tunnel_down"
+                        vxlan_connectivity_status = "failed"
                         
                 except Exception as e:
                     print(f"检查VXLAN隧道状态时出错: {str(e)}")
