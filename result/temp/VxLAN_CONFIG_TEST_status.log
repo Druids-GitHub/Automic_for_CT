@@ -1,0 +1,8 @@
+{
+    "status": "Failed",
+    "timestamp": "20250813_110148",
+    "result": {
+        "error_message": "JSON解析错误: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+    },
+    "system_info": {}
+}

@@ -36,7 +36,8 @@ def extract_device_name_from_prompt(prompt):
     return "config"
 
 def write_log(status, commands, system_info, error_message=None, device_name=None, file_suffix=None, 
-             isis_peer_status=None, ospf_peer_status=None, vrrp_status=None, ping_connectivity=None, bgp_peer_status=None):
+             isis_peer_status=None, ospf_peer_status=None, vrrp_status=None, ping_connectivity=None, bgp_peer_status=None,
+             vxlan_tunnel_status=None, vxlan_connectivity=None):
     """
     写入执行日志
     Args:
@@ -50,6 +51,9 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
         ospf_peer_status (str, optional): OSPF邻居状态  # 新增参数说明
         vrrp_status (str, optional): VRRP状态
         ping_connectivity (dict, optional): PING连通性测试结果
+        bgp_peer_status (str, optional): BGP邻居状态
+        vxlan_tunnel_status (str, optional): VXLAN隧道状态
+        vxlan_connectivity (dict, optional): VXLAN连通性测试结果
     """
     try:
         # 状态值转换 - 将老的"succeed"状态转换为新的"Completed"状态
@@ -151,13 +155,27 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
             prompt_pattern = r'^\s*(\[[\w\-\.]+(?:\-[\w\/\.]+)?\]|<[\w\-\.]+>)\s*$'
             
             for cmd in commands:
-                # 跳过空字符串
-                if not cmd.strip():
+                # 处理字典格式的命令（包含command和output）
+                if isinstance(cmd, dict):
+                    if 'output' in cmd:
+                        cmd_text = cmd['output']
+                    elif 'command' in cmd:
+                        cmd_text = cmd['command']
+                    else:
+                        cmd_text = str(cmd)
+                else:
+                    # 处理字符串格式的命令
+                    cmd_text = cmd
+                
+                # 检查是否为空或None
+                if not cmd_text or (isinstance(cmd_text, str) and not cmd_text.strip()):
                     continue
-                # 跳过只包含提示符的行
-                if re.match(prompt_pattern, cmd.strip()):
+                    
+                # 如果是字符串，检查是否只包含提示符
+                if isinstance(cmd_text, str) and re.match(prompt_pattern, cmd_text.strip()):
                     continue
-                filtered_commands.append(cmd)
+                    
+                filtered_commands.append(cmd_text)
             
             result_dict[device_name] = filtered_commands
         else:
@@ -242,6 +260,15 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
             result_dict["vrrp_status"] = vrrp_status
             # print(f"✓ 已添加vrrp_status到result_dict: {vrrp_status}")
 
+        # 处理VXLAN隧道状态
+        if vxlan_tunnel_status is not None:
+            result_dict["vxlan_tunnel_status"] = vxlan_tunnel_status
+            
+        # 处理VXLAN连通性测试结果
+        if vxlan_connectivity is not None:
+            if isinstance(vxlan_connectivity, dict):
+                result_dict["vxlan_connectivity"] = vxlan_connectivity
+
         # print(f"最终result_dict的键: {list(result_dict.keys())}")
         # if 'ping_connectivity' in result_dict:
         #     print(f"result_dict中的ping_connectivity值: {result_dict['ping_connectivity']}")
@@ -255,6 +282,11 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
             calling_script = os.path.basename(frame.f_code.co_filename)
             current_module = os.path.splitext(calling_script)[0]
             
+            # 过滤掉无效的模块名
+            if current_module == "<string>" or current_module == "<stdin>":
+                frame = frame.f_back
+                continue
+            
             # 如果是主调用脚本，使用它的名称
             if current_module.endswith("_TEST") or frame.f_globals.get('__name__') == '__main__':
                 module_name = current_module
@@ -267,15 +299,20 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
         if not module_name:
             frame = sys._getframe(1)
             calling_script = os.path.basename(frame.f_code.co_filename)
-            module_name = os.path.splitext(calling_script)[0]
+            current_module = os.path.splitext(calling_script)[0]
+            
+            # 如果仍然是无效的模块名，使用默认值
+            if current_module in ["<string>", "<stdin>", ""]:
+                module_name = "write_log_test"
+            else:
+                module_name = current_module
         
         # 日志目录为 result\temp
         log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "result", "temp")
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
         
-        # 更改日志文件名格式 - 使用file_suffix参数（如果提供）替代status
-        log_suffix = file_suffix if file_suffix else status
+        # 统一日志文件名格式 - 始终使用{模块名}_status.log格式
         log_filename = os.path.join(log_dir, f"{module_name}_status.log")
         
         # 使用JSON格式保存，确保字符串正确序列化

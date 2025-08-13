@@ -1,0 +1,36 @@
+{
+    "status": "Completed",
+    "timestamp": "20250806_150820",
+    "result": {
+        "H3C": [
+            "<H3C>system-view\nSystem View: return to User View with Ctrl+Z.",
+            "[H3C]snmp-agent\n",
+            "[H3C]snmp-agent community read public\n",
+            "[H3C]snmp-agent community write private\n",
+            "[H3C]snmp-agent sys-info version v2c\n",
+            "[H3C]snmp-agent trap enable\n",
+            "[H3C]snmp-agent target-host trap address udp-domain 192.168.56.1 params securityname public\n"
+        ]
+    },
+    "system_info": {
+        "H3C": [
+            "H3C Comware Software, Version 7.1.064, Release 0427P22",
+            "Copyright (c) 2004-2021 New H3C Technologies Co., Ltd. All rights reserved.",
+            "H3C MSR36-20 uptime is 0 weeks, 0 days, 6 hours, 28 minutes",
+            "Last reboot reason: User reboot",
+            "Boot image: flash:/msr36-cmw710-boot-r0424p22.bin",
+            "Boot image version: 7.1.064, Release 0427P22",
+            "  Compiled Mar 16 2021 15:00:00",
+            "Boot image: flash:/msr36-cmw710-system-r0424p22.bin",
+            "Boot image version: 7.1.064, Release 0427P22",
+            "  Compiled Mar 16 2021 15:00:00",
+            "CPU ID: 0x2",
+            "384M bytes DDR3 SDRAM Memory",
+            "1024M bytes Flash Memory",
+            "PCB               Version:  2.0",
+            "CPLD              Version:  1.0",
+            "Basic    BootWare Version:  1.42",
+            "Extended BootWare Version:  1.42"
+        ]
+    }
+}

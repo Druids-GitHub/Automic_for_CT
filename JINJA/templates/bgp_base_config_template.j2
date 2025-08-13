@@ -1,0 +1,52 @@
+{# filepath: d:\PY自动化\JINJA\templates\bgp_base_config_template.j2 #}
+{# BGP基础配置模板 #}
+
+{# 进入BGP进程 #}
+bgp {{ bgp_local_as }}
+
+{# 配置IPv4对等体 #}
+{% if peer_ip %}
+peer {{ peer_ip }} as-number {{ bgp_peer_as }}
+{% if bgp_local_as != bgp_peer_as %}
+peer {{ peer_ip }} ebgp-max-hop 255
+{% endif %}
+{% if conn_interface %}
+peer {{ peer_ip }} connect-interface {{ conn_interface }}
+{% endif %}
+{% endif %}
+
+{# 如果是EVPN或双栈，配置IPv6对等体 #}
+{% if (address_type == 'l2vpn evpn' or dual_stack) and ipv6_peer_ip %}
+peer {{ ipv6_peer_ip }} as-number {{ bgp_peer_as }}
+{% if conn_interface %}
+peer {{ ipv6_peer_ip }} connect-interface {{ conn_interface }}
+{% endif %}
+{% endif %}
+
+{# 进入地址族 #}
+address-family {{ address_type }}
+
+{# 启用IPv4对等体 #}
+{% if peer_ip %}
+peer {{ peer_ip }} enable
+{% endif %}
+
+{# 如果是EVPN或双栈，启用IPv6对等体 #}
+{% if (address_type == 'l2vpn evpn' or dual_stack) and ipv6_peer_ip %}
+peer {{ ipv6_peer_ip }} enable
+{% endif %}
+
+{# 网络宣告 #}
+{% if network_advertise and network_advertise.network and network_advertise.prefix %}
+{% if address_type == 'ipv6 unicast' %}
+network {{ network_advertise.network }} {{ network_advertise.prefix }}
+{% else %}
+network {{ network_advertise.network }} {{ network_advertise.prefix }}
+{% endif %}
+{% endif %}
+
+{# 退出地址族 #}
+quit
+
+{# 退出BGP进程 #}
+quit

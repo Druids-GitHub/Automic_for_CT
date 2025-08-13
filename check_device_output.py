@@ -23,7 +23,8 @@ def check_device_output(output):
         "No traditional IS-IS is enabled on the interface.",  # 接口上没有启用传统的IS-IS
         "IPv6 is not enabled for the process.",  # 进程未启用IPv6
         "NET Set - System is running. SystemId conflict",  # 系统ID冲突
-        "The IP address belongs to the network segment that contains the IP address of"
+        "The IP address belongs to the network segment that contains the IP address of",
+        "Invalid "
     ]
     
     # 将输出转换为小写进行比较，这样不区分大小写

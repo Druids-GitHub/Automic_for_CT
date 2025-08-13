@@ -792,6 +792,72 @@ def switch_interface_to_route_mode(ssh, interface, executed_commands):
         
     return True
 
+def switch_interface_to_bridge_mode(ssh, interface, executed_commands):
+    """
+    将接口切换至bridge模式
+    """
+    # 进入接口视图
+    cmd = f"interface {interface}"
+    output = ssh.send_command(cmd, strip_prompt=False, strip_command=False, expect_string=r"]")
+    print(output.rstrip(), end='')
+    
+    # 记录命令
+    prompt = output.strip().splitlines()[-1] if output.strip() else ""
+    cmd_output = output.strip()[:-len(prompt)].strip() if prompt else output.strip()
+    executed_commands.append({"command": cmd, "output": f"{prompt}\n{cmd_output}" if prompt else output.strip()})
+    
+    # 检查接口命令执行结果
+    status = check_device_output.check_device_output(output)
+    if status == "Failed":
+        error_message = f"进入接口 {interface} 失败，可能接口不存在或命名错误"
+        print(f"\n错误: {error_message}")
+        return False
+    
+    # 执行模式切换命令
+    cmd = "port link-mode bridge"
+    output = ssh.send_command(cmd, strip_prompt=False, strip_command=False, expect_string=r"(\]|Y\/N\:|Y\/N\])", delay_factor=2)
+    print(output.rstrip(), end='')
+
+    # 检查是否需要确认 - 支持多种确认提示格式
+    if "Continue? [Y/N]:" in output or "choose 'YES' or 'NO'[Y/N]:" in output or "[Y/N]" in output:
+        # 需要确认，立即发送Y
+        y_response = ssh.send_command("Y", strip_prompt=False, strip_command=False, expect_string=r"]", delay_factor=2)
+ 
+        # 过滤掉响应中的重复接口信息行
+        filtered_lines = []
+        for line in y_response.splitlines():
+            # 忽略仅包含接口名称的行
+            if not (line.strip() == f"interface {interface}"):
+                filtered_lines.append(line)
+        
+        filtered_response = "\n".join(filtered_lines)
+        print(filtered_response.rstrip(), end='')
+        
+        # 将过滤后的响应添加到输出中
+        output += filtered_response
+               
+        # 等待3秒以确保接口模式切换完成
+        print("\n等待3秒以确保接口模式切换完成...")
+        time.sleep(3)
+    else:
+        # 即使不需要确认，也添加3秒等待时间
+        print("\n等待3秒以确保接口模式切换完成...")
+        time.sleep(3)
+    
+    # 记录命令
+    prompt = output.strip().splitlines()[-1] if output.strip() else ""
+    cmd_output = output.strip()[:-len(prompt)].strip() if prompt else output.strip()
+    executed_commands.append({"command": cmd, "output": f"{prompt}\n{cmd_output}" if prompt else output.strip()})
+    
+    # 检查命令执行结果
+    status = check_device_output.check_device_output(output)
+    if status == "Failed":
+        error_message = f"无法将接口 {interface} 切换到bridge模式"
+        print(f"\n错误: {error_message}")
+        return False
+        
+    return True
+
 def execute_commands(ssh, commands, executed_commands=None, system_info=None, is_interface_mode=False, return_error_message=False):
     """执行一系列命令并处理输出"""
     if executed_commands is None:
