@@ -37,7 +37,7 @@ def extract_device_name_from_prompt(prompt):
 
 def write_log(status, commands, system_info, error_message=None, device_name=None, file_suffix=None, 
              isis_peer_status=None, ospf_peer_status=None, vrrp_status=None, ping_connectivity=None, bgp_peer_status=None,
-             vxlan_tunnel_status=None, vxlan_connectivity=None):
+             vxlan_tunnel_status=None, vxlan_connectivity=None, dhcp_functionality=None):
     """
     写入执行日志
     Args:
@@ -54,6 +54,7 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
         bgp_peer_status (str, optional): BGP邻居状态
         vxlan_tunnel_status (str, optional): VXLAN隧道状态
         vxlan_connectivity (dict, optional): VXLAN连通性测试结果
+        dhcp_functionality (str, optional): DHCP功能状态
     """
     try:
         # 状态值转换 - 将老的"succeed"状态转换为新的"Completed"状态
@@ -267,6 +268,10 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
         # 处理VXLAN连通性测试结果
         if vxlan_connectivity is not None:
             result_dict["vxlan_connectivity"] = vxlan_connectivity
+
+        # 处理DHCP功能状态
+        if dhcp_functionality is not None:
+            result_dict["dhcp_functionality"] = dhcp_functionality
 
         # print(f"最终result_dict的键: {list(result_dict.keys())}")
         # if 'ping_connectivity' in result_dict:

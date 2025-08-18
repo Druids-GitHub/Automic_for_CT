@@ -13,6 +13,7 @@ def check_device_output(output):
         "% Unrecognized",  # 无法识别的命令
         "% Ambiguous",     # 命令有歧义
         "% Invalid",       # 无效的命令
+        "% Too many parameters",  # 参数过多
         "Error",         # 命令错误
         "Wrong",         # 错误的命令
         "Failed",        # 命令失败

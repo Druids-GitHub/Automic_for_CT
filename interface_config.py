@@ -44,6 +44,51 @@ builtins.print = filtered_print
 # 在文件开头添加全局变量
 _log_message_printed = False
 
+def ensure_system_view(ssh):
+    """
+    确保SSH连接处于系统视图模式
+    
+    Args:
+        ssh: SSH连接对象
+        
+    Returns:
+        bool: 是否成功进入系统视图
+    """
+    try:
+        current_prompt = ssh.find_prompt()
+        print(f"当前提示符: {current_prompt}")
+        
+        # 如果在用户视图（包含<>），需要进入系统视图
+        if '<' in current_prompt and '>' in current_prompt:
+            print("检测到在用户视图，正在进入系统视图...")
+            output = ssh.send_command(
+                "system-view",
+                strip_prompt=False,
+                strip_command=False,
+                expect_string=r"[\>\]]",
+                delay_factor=2
+            )
+            print(output.rstrip(), end='')
+            
+            # 检查是否成功进入系统视图
+            new_prompt = ssh.find_prompt()
+            if '[' in new_prompt and ']' in new_prompt:
+                print(f"\n成功进入系统视图: {new_prompt}")
+                return True
+            else:
+                print(f"\n警告: 可能未成功进入系统视图，当前提示符: {new_prompt}")
+                return False
+        elif '[' in current_prompt and ']' in current_prompt:
+            print("已经在系统视图中")
+            return True
+        else:
+            print(f"警告: 无法识别的提示符格式: {current_prompt}")
+            return False
+            
+    except Exception as e:
+        print(f"确保系统视图时出错: {str(e)}")
+        return False
+
 # 修改设备类型定义
 DEVICE_TYPES = {
     "V7-Switch": "switch_v7",
@@ -389,7 +434,8 @@ def create_vlan(ssh, vlan_id, executed_commands):
         cmd,
         strip_prompt=False,
         strip_command=False,
-        expect_string=r"]"
+        expect_string=r"[\>\]]",
+        delay_factor=2
     )
     print(output.rstrip(), end='')
     # 提取提示符和命令输出
@@ -415,7 +461,8 @@ def config_interface_ip(ssh, interface, ip=None, mask=None, executed_commands=No
             cmd,
             strip_prompt=False,
             strip_command=False,
-            expect_string=r"]"
+            expect_string=r"[\>\]]",
+            delay_factor=2
         )
         print(output.rstrip(), end='')
         
@@ -439,7 +486,8 @@ def config_interface_ip(ssh, interface, ip=None, mask=None, executed_commands=No
                 cmd,
                 strip_prompt=False,
                 strip_command=False,
-                expect_string=r"]"
+                expect_string=r"[\>\]]",
+                delay_factor=2
             )
             print(output.rstrip(), end='')
             
@@ -462,7 +510,8 @@ def config_interface_ip(ssh, interface, ip=None, mask=None, executed_commands=No
                 cmd,
                 strip_prompt=False,
                 strip_command=False,
-                expect_string=r"]"
+                expect_string=r"[\>\]]",
+                delay_factor=2
             )
             print(output.rstrip(), end='')
             
@@ -479,7 +528,13 @@ def config_interface_ip(ssh, interface, ip=None, mask=None, executed_commands=No
         
         # 退出接口配置
         cmd = "quit"
-        output = ssh.send_command(cmd, strip_prompt=False, strip_command=False, expect_string=r"]")
+        output = ssh.send_command(
+            cmd, 
+            strip_prompt=False, 
+            strip_command=False, 
+            expect_string=r"[\>\]]",
+            delay_factor=2
+        )
         print(output.rstrip(), end='')
         
         prompt = output.strip().splitlines()[-1] if output.strip() else ""
@@ -502,7 +557,8 @@ def config_port_vlan(ssh, interface, vlan_id, executed_commands):
         cmd,
         strip_prompt=False,
         strip_command=False,
-        expect_string=r"]"
+        expect_string=r"[\>\]]",
+        delay_factor=2
     )
     print(output.rstrip(), end='')
     
@@ -525,7 +581,8 @@ def config_port_vlan(ssh, interface, vlan_id, executed_commands):
         cmd,
         strip_prompt=False,
         strip_command=False,
-        expect_string=r"]"
+        expect_string=r"[\>\]]",
+        delay_factor=2
     )
     print(output.rstrip(), end='')
     prompt = output.strip().splitlines()[-1] if output.strip() else ""
@@ -546,7 +603,8 @@ def config_port_vlan(ssh, interface, vlan_id, executed_commands):
         cmd,
         strip_prompt=False,
         strip_command=False,
-        expect_string=r"]"
+        expect_string=r"[\>\]]",
+        delay_factor=2
     )
     print(output.rstrip(), end='')
     prompt = output.strip().splitlines()[-1] if output.strip() else ""
@@ -697,18 +755,41 @@ def check_interface_mode(ssh, interface):
         str: "bridge"或"route"或"unknown"
     """
     try:
-        # 先进入接口配置模式
-        ssh.send_command(f"interface {interface}", expect_string=r"]")
+        # 确保在系统视图下
+        if not ensure_system_view(ssh):
+            print(f"无法确保系统视图，跳过接口 {interface} 模式检查")
+            return "unknown"
+        
+        # 先进入接口配置模式，使用更宽松的expect_string
+        ssh.send_command(
+            f"interface {interface}", 
+            strip_prompt=False, 
+            strip_command=False,
+            expect_string=r"[\>\]]",
+            delay_factor=2
+        )
         
         # 使用display this命令查看接口配置
-        output = ssh.send_command("display this", expect_string=r"]")
+        output = ssh.send_command(
+            "display this", 
+            strip_prompt=False, 
+            strip_command=False,
+            expect_string=r"[\>\]]",
+            delay_factor=2
+        )
         
         # 添加调试信息
-        print(f"DEBUG - 接口 {interface} 的display this输出:")
+        print(f"\nDEBUG - 接口 {interface} 的display this输出:")
         print(f"'{output}'")
         
         # 退出接口配置模式
-        ssh.send_command("quit", expect_string=r"]")
+        ssh.send_command(
+            "quit", 
+            strip_prompt=False, 
+            strip_command=False,
+            expect_string=r"[\>\]]",
+            delay_factor=2
+        )
         
         # 检查接口模式 - 扩展匹配模式
         if any(keyword in output.lower() for keyword in ["port link-mode bridge", "link-mode bridge", "bridge"]):
@@ -729,9 +810,20 @@ def switch_interface_to_route_mode(ssh, interface, executed_commands):
     """
     将接口切换至route模式
     """
+    # 确保在系统视图下
+    if not ensure_system_view(ssh):
+        print(f"无法确保系统视图，取消接口 {interface} 模式切换")
+        return False
+    
     # 进入接口视图
     cmd = f"interface {interface}"
-    output = ssh.send_command(cmd, strip_prompt=False, strip_command=False, expect_string=r"]")
+    output = ssh.send_command(
+        cmd, 
+        strip_prompt=False, 
+        strip_command=False, 
+        expect_string=r"[\>\]]",
+        delay_factor=2
+    )
     print(output.rstrip(), end='')
     
     # 记录命令
@@ -748,28 +840,43 @@ def switch_interface_to_route_mode(ssh, interface, executed_commands):
     
     # 执行模式切换命令
     cmd = "port link-mode route"
-    output = ssh.send_command(cmd, strip_prompt=False, strip_command=False, expect_string=r"(\]|Y\/N\:|Y\/N\])", delay_factor=2)
+    output = ssh.send_command(
+        cmd, 
+        strip_prompt=False, 
+        strip_command=False, 
+        expect_string=r"(\]|Y\/N\:|Y\/N\]|Continue\?)",
+        delay_factor=3
+    )
     print(output.rstrip(), end='')
 
     # 检查是否需要确认 - 支持多种确认提示格式
-    if "Continue? [Y/N]:" in output or "choose 'YES' or 'NO'[Y/N]:" in output or "[Y/N]" in output:
+    if any(confirm in output for confirm in ["Continue? [Y/N]:", "choose 'YES' or 'NO'[Y/N]:", "[Y/N]"]):
         # 需要确认，立即发送Y - 不要等待
-        y_response = ssh.send_command("Y", strip_prompt=False, strip_command=False, expect_string=r"]", delay_factor=2)
- 
-        # 过滤掉响应中的重复接口信息行
-        filtered_lines = []
-        for line in y_response.splitlines():
-            # 忽略仅包含接口名称的行
-            if not (line.strip() == f"interface {interface}"):
-                filtered_lines.append(line)
-        
-        filtered_response = "\n".join(filtered_lines)
-        print(filtered_response.rstrip(), end='')
-        
-        # 将过滤后的响应添加到输出中
-        output += filtered_response
+        try:
+            y_response = ssh.send_command(
+                "Y", 
+                strip_prompt=False, 
+                strip_command=False, 
+                expect_string=r"[\>\]]",
+                delay_factor=3
+            )
+     
+            # 过滤掉响应中的重复接口信息行
+            filtered_lines = []
+            for line in y_response.splitlines():
+                # 忽略仅包含接口名称的行
+                if not (line.strip() == f"interface {interface}"):
+                    filtered_lines.append(line)
+            
+            filtered_response = "\n".join(filtered_lines)
+            print(filtered_response.rstrip(), end='')
+            
+            # 将过滤后的响应添加到输出中
+            output += filtered_response
+        except Exception as e:
+            print(f"\n警告: 发送确认响应时出错: {str(e)}")
                
-        #等待3秒以确保接口模式切换完成
+        # 等待3秒以确保接口模式切换完成
         print("\n等待3秒以确保接口模式切换完成...")
         time.sleep(3)
         
@@ -798,7 +905,13 @@ def switch_interface_to_bridge_mode(ssh, interface, executed_commands):
     """
     # 进入接口视图
     cmd = f"interface {interface}"
-    output = ssh.send_command(cmd, strip_prompt=False, strip_command=False, expect_string=r"]")
+    output = ssh.send_command(
+        cmd, 
+        strip_prompt=False, 
+        strip_command=False, 
+        expect_string=r"[\>\]]",
+        delay_factor=2
+    )
     print(output.rstrip(), end='')
     
     # 记录命令
@@ -815,26 +928,41 @@ def switch_interface_to_bridge_mode(ssh, interface, executed_commands):
     
     # 执行模式切换命令
     cmd = "port link-mode bridge"
-    output = ssh.send_command(cmd, strip_prompt=False, strip_command=False, expect_string=r"(\]|Y\/N\:|Y\/N\])", delay_factor=2)
+    output = ssh.send_command(
+        cmd, 
+        strip_prompt=False, 
+        strip_command=False, 
+        expect_string=r"(\]|Y\/N\:|Y\/N\]|Continue\?)",
+        delay_factor=3
+    )
     print(output.rstrip(), end='')
 
     # 检查是否需要确认 - 支持多种确认提示格式
-    if "Continue? [Y/N]:" in output or "choose 'YES' or 'NO'[Y/N]:" in output or "[Y/N]" in output:
+    if any(confirm in output for confirm in ["Continue? [Y/N]:", "choose 'YES' or 'NO'[Y/N]:", "[Y/N]"]):
         # 需要确认，立即发送Y
-        y_response = ssh.send_command("Y", strip_prompt=False, strip_command=False, expect_string=r"]", delay_factor=2)
- 
-        # 过滤掉响应中的重复接口信息行
-        filtered_lines = []
-        for line in y_response.splitlines():
-            # 忽略仅包含接口名称的行
-            if not (line.strip() == f"interface {interface}"):
-                filtered_lines.append(line)
-        
-        filtered_response = "\n".join(filtered_lines)
-        print(filtered_response.rstrip(), end='')
-        
-        # 将过滤后的响应添加到输出中
-        output += filtered_response
+        try:
+            y_response = ssh.send_command(
+                "Y", 
+                strip_prompt=False, 
+                strip_command=False, 
+                expect_string=r"[\>\]]",
+                delay_factor=3
+            )
+     
+            # 过滤掉响应中的重复接口信息行
+            filtered_lines = []
+            for line in y_response.splitlines():
+                # 忽略仅包含接口名称的行
+                if not (line.strip() == f"interface {interface}"):
+                    filtered_lines.append(line)
+            
+            filtered_response = "\n".join(filtered_lines)
+            print(filtered_response.rstrip(), end='')
+            
+            # 将过滤后的响应添加到输出中
+            output += filtered_response
+        except Exception as e:
+            print(f"\n警告: 发送确认响应时出错: {str(e)}")
                
         # 等待3秒以确保接口模式切换完成
         print("\n等待3秒以确保接口模式切换完成...")
@@ -880,7 +1008,8 @@ def execute_commands(ssh, commands, executed_commands=None, system_info=None, is
                 cmd,
                 strip_prompt=False,
                 strip_command=False,
-                expect_string=r"]"
+                expect_string=r"[\>\]]",
+                delay_factor=2
             )
             print(output.rstrip(), end='')
             
