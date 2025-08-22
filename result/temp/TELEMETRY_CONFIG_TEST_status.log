@@ -1,0 +1,9 @@
+{
+    "status": "Failed",
+    "timestamp": "20250822_162539",
+    "result": {
+        "config": [],
+        "error_message": "无法登录设备 192.168.30.7"
+    },
+    "system_info": {}
+}

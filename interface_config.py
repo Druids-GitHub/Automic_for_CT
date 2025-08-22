@@ -44,23 +44,26 @@ builtins.print = filtered_print
 # 在文件开头添加全局变量
 _log_message_printed = False
 
-def ensure_system_view(ssh):
+def ensure_system_view(ssh, verbose=True):
     """
     确保SSH连接处于系统视图模式
     
     Args:
         ssh: SSH连接对象
+        verbose: 是否输出调试信息，默认为True
         
     Returns:
         bool: 是否成功进入系统视图
     """
     try:
         current_prompt = ssh.find_prompt()
-        print(f"当前提示符: {current_prompt}")
+        if verbose:
+            print(f"当前提示符: {current_prompt}")
         
         # 如果在用户视图（包含<>），需要进入系统视图
         if '<' in current_prompt and '>' in current_prompt:
-            print("检测到在用户视图，正在进入系统视图...")
+            if verbose:
+                print("检测到在用户视图，正在进入系统视图...")
             output = ssh.send_command(
                 "system-view",
                 strip_prompt=False,
@@ -73,16 +76,20 @@ def ensure_system_view(ssh):
             # 检查是否成功进入系统视图
             new_prompt = ssh.find_prompt()
             if '[' in new_prompt and ']' in new_prompt:
-                print(f"\n成功进入系统视图: {new_prompt}")
+                if verbose:
+                    print(f"\n成功进入系统视图: {new_prompt}")
                 return True
             else:
-                print(f"\n警告: 可能未成功进入系统视图，当前提示符: {new_prompt}")
+                if verbose:
+                    print(f"\n警告: 可能未成功进入系统视图，当前提示符: {new_prompt}")
                 return False
         elif '[' in current_prompt and ']' in current_prompt:
-            print("已经在系统视图中")
+            if verbose:
+                print("已经在系统视图中")
             return True
         else:
-            print(f"警告: 无法识别的提示符格式: {current_prompt}")
+            if verbose:
+                print(f"警告: 无法识别的提示符格式: {current_prompt}")
             return False
             
     except Exception as e:
@@ -743,21 +750,23 @@ def is_loopback_interface(interface):
     """
     return interface.lower().startswith("loopback")
 
-def check_interface_mode(ssh, interface):
+def check_interface_mode(ssh, interface, verbose=True):
     """
     检查接口的link-mode
     
     Args:
         ssh: SSH连接对象
         interface: 接口名称
+        verbose: 是否输出调试信息，默认为True
         
     Returns:
         str: "bridge"或"route"或"unknown"
     """
     try:
         # 确保在系统视图下
-        if not ensure_system_view(ssh):
-            print(f"无法确保系统视图，跳过接口 {interface} 模式检查")
+        if not ensure_system_view(ssh, verbose):
+            if verbose:
+                print(f"无法确保系统视图，跳过接口 {interface} 模式检查")
             return "unknown"
         
         # 先进入接口配置模式，使用更宽松的expect_string
@@ -778,9 +787,10 @@ def check_interface_mode(ssh, interface):
             delay_factor=2
         )
         
-        # 添加调试信息
-        print(f"\nDEBUG - 接口 {interface} 的display this输出:")
-        print(f"'{output}'")
+        # 添加调试信息（如果启用verbose）
+        if verbose:
+            print(f"\nDEBUG - 接口 {interface} 的display this输出:")
+            print(f"'{output}'")
         
         # 退出接口配置模式
         ssh.send_command(
@@ -793,13 +803,16 @@ def check_interface_mode(ssh, interface):
         
         # 检查接口模式 - 扩展匹配模式
         if any(keyword in output.lower() for keyword in ["port link-mode bridge", "link-mode bridge", "bridge"]):
-            print(f"检测到接口 {interface} 为bridge模式")
+            if verbose:
+                print(f"检测到接口 {interface} 为bridge模式")
             return "bridge"
         elif any(keyword in output.lower() for keyword in ["port link-mode route", "link-mode route", "route"]):
-            print(f"检测到接口 {interface} 为route模式")
+            if verbose:
+                print(f"检测到接口 {interface} 为route模式")
             return "route"
         else:
-            print(f"警告: 接口 {interface} 模式未知，输出内容: {output[:100]}...")
+            if verbose:
+                print(f"警告: 接口 {interface} 模式未知，输出内容: {output[:100]}...")
             return "unknown"
             
     except Exception as e:

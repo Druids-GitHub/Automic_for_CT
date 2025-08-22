@@ -14,13 +14,21 @@ def check_ip(hostip):
 def login(hostip, username, password):
     """登录 H3C 设备"""
     try:
-        # 创建正确的设备字典
+        # 创建正确的设备字典 - 进一步优化性能
         device = {
             'device_type': 'hp_comware',
             'host': hostip,  # 使用host而不是hostip
             'username': username,
             'password': password,
-            'timeout': 10
+            'timeout': 5,    # 进一步减少连接超时
+            'session_timeout': 10,   # 进一步减少会话超时
+            'keepalive': 5,   # 进一步减少保持连接间隔
+            'blocking_timeout': 3,    # 进一步减少阻塞操作超时
+            'conn_timeout': 3,    # 进一步减少连接超时
+            'read_timeout_override': 5,   # 进一步减少读取超时覆盖
+            'global_delay_factor': 0.3,   # 进一步减少全局延迟因子
+            'fast_cli': True,  # 启用快速CLI模式
+            'session_log': None,  # 禁用会话日志提升速度
         }
         
         # 调用ConnectHandler
@@ -154,6 +162,13 @@ def run_script(device_params):
             'host': device_params['hostip'],  # 这里是关键修改
             'username': device_params['username'],
             'password': device_params['password'],
+            'timeout': 15,  # 减少超时时间
+            'session_timeout': 30,  # 减少会话超时
+            'keepalive': 15,  # 减少保持连接间隔
+            'blocking_timeout': 10,  # 减少阻塞操作超时
+            'conn_timeout': 8,  # 减少连接超时
+            'read_timeout_override': 15,  # 减少读取超时覆盖
+            'global_delay_factor': 1,  # 减少全局延迟因子
         }
         
         # 传递正确参数名称的字典
