@@ -1,6 +1,8 @@
 import argparse
 import getpass
 import time
+import json
+import os
 from netmiko import ConnectHandler
 import re
 
@@ -81,6 +83,56 @@ def silent_input(net_connect):
         return command
     except KeyboardInterrupt:
         return 'exit'
+
+def read_login_args():
+    """
+    从配置文件或环境变量读取登录信息
+    返回设备信息列表，格式：[{'hostip': '...', 'username': '...', 'password': '...'}]
+    """
+    # 方法1: 尝试从device_config.json文件读取
+    config_files = ['device_config.json', 'devices.json', 'login_config.json']
+    
+    for config_file in config_files:
+        if os.path.exists(config_file):
+            try:
+                with open(config_file, 'r', encoding='utf-8') as f:
+                    config_data = json.load(f)
+                    # 支持多种格式
+                    if 'devices' in config_data:
+                        return config_data['devices']
+                    elif isinstance(config_data, list):
+                        return config_data
+                    else:
+                        # 单个设备格式
+                        return [config_data]
+            except Exception as e:
+                print(f"读取配置文件 {config_file} 失败: {e}")
+                continue
+    
+    # 方法2: 尝试从环境变量读取
+    import os
+    device_ip = os.environ.get('DEVICE_IP')
+    device_user = os.environ.get('DEVICE_USERNAME')
+    device_pass = os.environ.get('DEVICE_PASSWORD')
+    
+    if device_ip and device_user and device_pass:
+        return [{
+            'hostip': device_ip,
+            'username': device_user,
+            'password': device_pass
+        }]
+    
+    # 方法3: 返回默认测试设备（如果存在）
+    default_devices = [
+        {
+            'hostip': '192.168.56.10',
+            'username': 'admin', 
+            'password': 'h3c.com123'
+        }
+    ]
+    
+    print("警告: 未找到设备配置文件，使用默认测试设备")
+    return default_devices
 
 def main(hostip, username, password):
     net_connect = login(hostip, username, password)

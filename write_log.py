@@ -105,7 +105,10 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
         # 处理commands参数 - 转换为字典格式
         result_dict = {}
 
-        if isinstance(commands, dict):
+        # 对于Running状态且commands为None的情况，保持result_dict为空字典
+        if status == "Running" and commands is None:
+            pass  # 保持result_dict为空字典
+        elif isinstance(commands, dict):
             # 如果已经是字典格式，处理每个值
             for key, value in commands.items():
                 if isinstance(value, str) and '\n' in value:
@@ -113,10 +116,13 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
                     lines = value.split('\n')
                     filtered_lines = []
                     
-                    # 定义模式：只包含提示符的行
-                    empty_prompt_pattern = r'^\s*(\[[\w\-\.]+(?:\-[\w\/\.]+)?\]|<[\w\-\.]+>)\s*$'
-                    # 定义模式：有效的命令行(带提示符)
-                    command_pattern = r'^\s*(\[[\w\-\.]+(?:\-[\w\/\.]+)?\]|<[\w\-\.]+>)(.*?)$'
+                    # 定义模式：只包含提示符的行 - 修复：避免匹配XML标签
+                    # SSH提示符通常是[device-name]或<device-name>，其中device-name通常包含小写字母、数字、横线等
+                    # XML标签通常是<TagName>格式，TagName首字母大写
+                    # 修改正则表达式，只匹配明确的SSH提示符格式，排除XML标签
+                    empty_prompt_pattern = r'^\s*(\[[\w\-\.]+(?:\-[\w\/\.]+)?\]|<[a-z][\w\-\.]*>)\s*$'
+                    # 定义模式：有效的命令行(带提示符) - 同样修复
+                    command_pattern = r'^\s*(\[[\w\-\.]+(?:\-[\w\/\.]+)?\]|<[a-z][\w\-\.]*>)(.*?)$'
                     
                     current_prompt = ""  # 记录当前提示符
                     
@@ -179,7 +185,7 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
                 filtered_commands.append(cmd_text)
             
             result_dict[device_name] = filtered_commands
-        else:
+        elif commands is not None:
             # 字符串或其他类型，使用设备名称作为键
             if isinstance(commands, str) and '\n' in commands:
                 # 将包含换行符的字符串转换为列表 - 增加过滤逻辑
@@ -203,7 +209,10 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
         # 处理system_info参数 - 转换为字典格式，同时处理字符串转列表
         system_info_dict = {}
         
-        if isinstance(system_info, dict):
+        # 对于Running状态且system_info为None的情况，保持system_info_dict为空字典
+        if status == "Running" and system_info is None:
+            pass  # 保持system_info_dict为空字典
+        elif isinstance(system_info, dict):
             # 如果已经是字典格式，处理每个值
             for key, value in system_info.items():
                 if isinstance(value, str) and '\n' in value:
@@ -211,7 +220,7 @@ def write_log(status, commands, system_info, error_message=None, device_name=Non
                     system_info_dict[key] = [line for line in value.split('\n') if line.strip()]
                 else:
                     system_info_dict[key] = value
-        else:
+        elif system_info is not None:
             # 字符串或其他类型，使用设备名称作为键
             if isinstance(system_info, str) and '\n' in system_info:
                 # 将包含换行符的字符串转换为列表 - 过滤空行

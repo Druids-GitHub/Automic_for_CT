@@ -1,0 +1,87 @@
+python SNMP_CONFIG_TEST.py "{""h# H3C NETCONF 接口状态控制 - 修复版
+
+# 问题说明：
+# 之前的版本在日志中显示XML缺少 <AdminStatus>2</AdminStatus> 字段
+# 已修复XML生成和日志记录问题
+
+# 修复后的正确命令格式：
+
+# 接口状态控制 - 关闭接口 (确保包含AdminStatus=2)
+python NETCONF_CONFIG_TEST.py "{\"hostip\":\"10.12.174.228\",\"username\":\"admin\",\"password\":\"H3c.com@123\",\"operation\":\"interface\",\"ifindex\":48,\"description\":\"Test Interface Shutdown\",\"admin_status\":\"shutdown\"}"
+
+# 接口状态控制 - 开启接口 (确保包含AdminStatus=1) 
+python NETCONF_CONFIG_TEST.py "{\"hostip\":\"10.12.174.228\",\"username\":\"admin\",\"password\":\"H3c.com@123\",\"operation\":\"interface\",\"ifindex\":48,\"description\":\"Test Interface Enable\",\"admin_status\":\"undo shutdown\"}"
+
+# 只修改描述，不改变接口状态
+python NETCONF_CONFIG_TEST.py "{\"hostip\":\"10.12.174.228\",\"username\":\"admin\",\"password\":\"H3c.com@123\",\"operation\":\"interface\",\"ifindex\":48,\"description\":\"Updated Description Only\"}"
+
+# 只控制接口状态，不修改描述 (确保XML包含AdminStatus字段)
+python NETCONF_CONFIG_TEST.py "{\"hostip\":\"10.12.174.228\",\"username\":\"admin\",\"password\":\"H3c.com@123\",\"operation\":\"interface\",\"ifindex\":48,\"admin_status\":\"shutdown\"}"
+
+# 验证修复效果的测试命令：
+# 1. 检查日志文件 result/temp/NETCONF_CONFIG_TEST_status.log
+# 2. 确认xml_config字段包含 <AdminStatus>2</AdminStatus> 或 <AdminStatus>1</AdminStatus>
+# 3. 检查设备响应为 <ok/>
+
+# 其他NETCONF命令保持不变：
+
+python NETCONF_CONFIG_TEST.py "{\"hostip\":\"10.12.174.228\",\"username\":\"admin\",\"password\":\"H3c.com@123\",\"operation\":\"test\"}"
+
+python NETCONF_CONFIG_TEST.py "{\"hostip\":\"10.12.174.228\",\"username\":\"admin\",\"password\":\"H3c.com@123\",\"operation\":\"capabilities\"}"
+
+python NETCONF_CONFIG_TEST.py "{\"hostip\":\"10.12.174.228\",\"username\":\"admin\",\"password\":\"H3c.com@123\",\"operation\":\"interface\",\"ifindex\":1,\"description\":\"interface desc test 1\"}"
+
+# 故障排除：
+# 如果接口状态仍然无法控制，可能的原因：
+# 1. ifindex 48 对应的接口类型不支持AdminStatus控制
+# 2. 接口可能是特殊类型（管理接口、上联接口等）
+# 3. 需要额外的权限或配置
+# 
+# 建议：
+# 1. 先用只设置描述的命令确认ifindex对应的实际接口
+# 2. 通过SSH CLI手动验证该接口是否支持shutdown/undo shutdown
+# 3. 尝试其他接口索引（如ifindex=1, 25, 26等）92.168.56.10"",""username"":""admin"",""password"":""h3c.com123"",""community_read"":""public"",""community_write"":""private"",""snmp_version"":""v2c"",""trap_host"":""192.168.56.1""}"
+
+python SNMP_CONFIG_TEST.py "{""hostip"":""192.168.56.10"",""username"":""admin"",""password"":""h3c.com123"",""community_read"":""public"",""community_write"":""private"",""snmp_version"":""all"",""snmp_user_group"":""group1"",""snmp_username"":""user1"",""snmp_sha_key"":""sha123456"",""snmp_aes_key"":""aes123456"",""trap_host"":""192.168.56.1""}"
+
+
+python vxlan_config_test.py "{""hostip"":""192.168.56.10,192.168.56.11"",""username"":""admin"",""password"":""h3c.com123"",""vni"":""100"",""vlan_id"":""100"",""dut1_local_ip"":""10.1.1.1"",""dut2_local_ip"":""10.1.1.2"",""dut1_ac_interface"":""GigabitEthernet0/2"",""dut1_uplink_interface"":""GigabitEthernet0/1"",""dut2_ac_interface"":""GigabitEthernet0/2"",""dut2_uplink_interface"":""GigabitEthernet0/1""}"
+python vxlan_config_test.py "{""hostip"":""192.168.56.10,192.168.56.11"",""username"":""admin"",""password"":""h3c.com123"",""vni"":""100"",""vlan_id"":""100"",""dut1_ac_interface"":""GigabitEthernet1/0/2"",""dut1_uplink_interface"":""GigabitEthernet1/0/1"",""dut2_ac_interface"":""GigabitEthernet1/0/2"",""dut2_uplink_interface"":""GigabitEthernet1/0/1""}"
+
+
+python DHCP_RELAY_CONFIG_TEST.py "{""hostip"":""192.168.56.10,192.168.56.11"",""username"":""admin"",""password"":""h3c.com123"",""server_to_relay_interface"":""GigabitEthernet1/0/1"",""relay_to_server_interface"":""GigabitEthernet1/0/1"",""relay_dhcp_interface"":""GigabitEthernet1/0/2"",""pool_name"":""dhcp_pool"",""network"":""192.168.100.0"",""mask"":""255.255.255.0"",""gateway"":""192.168.100.1"",""dns_server"":""8.8.8.8""}"
+
+python TACACS_CONFIG_TEST.py "{""hostip"":""192.168.56.10"",""username"":""admin"",""password"":""h3c.com123"",""authen_server_ip"":""192.168.1.100"",""scheme_name"":""scheme1"",""domain_name"":""domain1"",""server_password"":""password123""}"
+
+python TELEMETRY_CONFIG_TEST.py "{""hostip"":""10.12.174.228"",""username"":""admin"",""password"":""H3c.com@123"",""collector_ip"":""192.168.100.1"",""sensor_group_name"":""group1"",""destination_group_name"":""group1"",""subscription_name"":""sub1"",""sample_interval"":""10""}"
+
+python NTP_CONFIG_TEST.py "{""hostip"":""192.168.56.10,192.168.56.11"",""username"":""admin"",""password"":""h3c.com123"",""ntp_server_device"":""1"", ""dut1_interface"":""Gi0/0/1"",""dut2_interface"":""Gi0/0/2""}"
+
+python MTU_CONFIG_TEST.py "{""hostip"":""192.168.56.10"",""username"":""admin"",""password"":""h3c.com123"",""interface1"":""GigabitEthernet1/0/1"",""interface2"":""GigabitEthernet1/0/2"",""mtu_value"":""1546""}"
+
+python SYSLOG_CONFIG_TEST.py "{""hostip"":""192.168.56.10"",""username"":""admin"",""password"":""h3c.com123"",""log_server_ip"":""192.168.56.1""}"
+
+python MGMTVRF_CONFIG_TEST.py "{""hostip"":""192.168.56.10"",""username"":""admin"",""password"":""h3c.com123"",""mgmt_interface"":""Mge0/0/0""}"
+
+
+python NETCONF_CONFIG_TEST.py "{""hostip"":""192.168.56.10"",""port"":830,""username"":""admin"",""password"":""h3c.com123"",""config_type"":""interface"",""config_data"":""{""interface_name"":""GigabitEthernet1/0/1"",""ip_address"":""192.168.1.1/24"",""description"":""Test Interface""}""}"
+
+
+
+python NETCONF_CONFIG_TEST.py "{""hostip"":""10.12.174.228"",""username"":""admin"",""password"":""H3c.com@123"",""operation"":""interface"",""ifindex"":48,""description"":""interface desc test 50""}"
+python NETCONF_CONFIG_TEST.py "{""hostip"":""10.12.174.228"",""username"":""admin"",""password"":""H3c.com@123"",""operation"":""interface"",""ifindex"":1,""description"":""interface desc test 1""}"
+python NETCONF_CONFIG_TEST.py "{""hostip"":""192.168.56.10"",""username"":""admin"",""password"":""h3c.com123"",""operation"":""interface"",""ifindex"":1,""description"":""interface desc test 1""}"
+
+# 接口状态控制 - 关闭接口
+python NETCONF_CONFIG_TEST.py "{""hostip"":""10.12.174.228"",""username"":""admin"",""password"":""H3c.com@123"",""operation"":""interface"",""ifindex"":25,""description"":""Test Interface"",""admin_status"":""shutdown""}"
+
+# 接口状态控制 - 开启接口
+python NETCONF_CONFIG_TEST.py "{""hostip"":""10.12.174.228"",""username"":""admin"",""password"":""H3c.com@123"",""operation"":""interface"",""ifindex"":25,""description"":""Test Interface"",""admin_status"":""undo shutdown""}"
+
+# 只修改描述，不改变接口状态
+python NETCONF_CONFIG_TEST.py "{""hostip"":""10.12.174.228"",""username"":""admin"",""password"":""H3c.com@123"",""operation"":""interface"",""ifindex"":25,""description"":""Updated Description""}"
+
+# 只控制接口状态，不修改描述
+python NETCONF_CONFIG_TEST.py "{""hostip"":""10.12.174.228"",""username"":""admin"",""password"":""H3c.com@123"",""operation"":""interface"",""ifindex"":25,""admin_status"":""shutdown""}"
+
+
