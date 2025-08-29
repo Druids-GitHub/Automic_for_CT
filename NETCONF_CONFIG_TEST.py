@@ -1,7 +1,9 @@
-#写一个通过NETCONF协议配置H3C路由器、交换机的脚本。
+#H3C设备NETCONF配置执行工具
+#专门用于执行具体的NETCONF配置操作：接口配置、VLAN配置等
+#注意：如需查询设备capabilities，请使用 NETCONF_Capability.py
 #1. 使用NETCONF协议连接设备
 #2. 通过XML格式发送配置命令
-#3. 支持多种配置操作：接口配置、VLAN配置等
+#3. 支持多种配置操作：接口配置、VLAN配置、设备探索等
 
 import sys
 import os
@@ -566,7 +568,108 @@ def build_h3c_vlan_config_xml_correct(vlan_id):
     
     return config
 
-def build_h3c_hostname_config_xml(hostname):
+def build_h3c_interface_ip_config_xml(ifindex, ip_address, subnet_mask="255.255.255.0", description=None):
+    """
+    构建H3C接口IP地址配置XML
+    
+    Args:
+        ifindex: 接口索引
+        ip_address: IP地址
+        subnet_mask: 子网掩码，默认255.255.255.0
+        description: 接口描述（可选）
+    """
+    print(f"🌐 配置接口{ifindex} IP地址: {ip_address}/{subnet_mask}")
+    if description:
+        print(f"📝 接口描述: '{description}'")
+    
+    config = f'''<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <top xmlns="http://www.h3c.com/netconf/config:1.0">
+    <Ifmgr>
+      <Interfaces>
+        <Interface>
+          <IfIndex>{ifindex}</IfIndex>'''
+    
+    if description:
+        config += f'''
+          <Description>{description}</Description>'''
+    
+    config += f'''
+          <ConfigType>1</ConfigType>
+        </Interface>
+      </Interfaces>
+    </Ifmgr>
+    <IP>
+      <Interfaces>
+        <Interface>
+          <IfIndex>{ifindex}</IfIndex>
+          <IPv4Addrs>
+            <IPv4Addr>
+              <IpAddress>{ip_address}</IpAddress>
+              <SubnetMask>{subnet_mask}</SubnetMask>
+              <AddrType>1</AddrType>
+            </IPv4Addr>
+          </IPv4Addrs>
+        </Interface>
+      </Interfaces>
+    </IP>
+  </top>
+</config>'''
+    
+    return config
+
+def build_h3c_vlan_interface_config_xml(vlan_id, ip_address, subnet_mask="255.255.255.0", description=None):
+    """
+    构建H3C VLAN接口IP地址配置XML
+    
+    Args:
+        vlan_id: VLAN ID
+        ip_address: IP地址
+        subnet_mask: 子网掩码
+        description: 接口描述（可选）
+    """
+    print(f"🌐 配置VLAN{vlan_id}接口 IP地址: {ip_address}/{subnet_mask}")
+    if description:
+        print(f"📝 接口描述: '{description}'")
+    
+    # VLAN接口的IfIndex通常是128 + VLAN ID
+    vlan_ifindex = 128 + int(vlan_id)
+    
+    config = f'''<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <top xmlns="http://www.h3c.com/netconf/config:1.0">
+    <Ifmgr>
+      <Interfaces>
+        <Interface>
+          <IfIndex>{vlan_ifindex}</IfIndex>
+          <Name>Vlan-interface{vlan_id}</Name>'''
+    
+    if description:
+        config += f'''
+          <Description>{description}</Description>'''
+    
+    config += f'''
+          <ConfigType>1</ConfigType>
+          <AdminStatus>1</AdminStatus>
+        </Interface>
+      </Interfaces>
+    </Ifmgr>
+    <IP>
+      <Interfaces>
+        <Interface>
+          <IfIndex>{vlan_ifindex}</IfIndex>
+          <IPv4Addrs>
+            <IPv4Addr>
+              <IpAddress>{ip_address}</IpAddress>
+              <SubnetMask>{subnet_mask}</SubnetMask>
+              <AddrType>1</AddrType>
+            </IPv4Addr>
+          </IPv4Addrs>
+        </Interface>
+      </Interfaces>
+    </IP>
+  </top>
+</config>'''
+    
+    return config
     """构建H3C主机名配置XML - 基于真实设备结构"""
     config = f'''<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <top xmlns="http://www.h3c.com/netconf/config:1.0">
@@ -649,8 +752,8 @@ def parse_config_json(config_string_or_file):
     
     return config_data
 
-def get_device_capabilities(host, username, password, port=830):
-    """获取设备支持的NETCONF capabilities"""
+def explore_device_config(host, username, password, port=830):
+    """探索设备的配置结构"""
     try:
         with manager.connect(
             host=host,
@@ -658,24 +761,52 @@ def get_device_capabilities(host, username, password, port=830):
             username=username,
             password=password,
             timeout=30,
-            device_params={'name': 'h3c'},  # H3C设备特定参数
+            device_params={'name': 'h3c'},
             hostkey_verify=False,
             look_for_keys=False,
             allow_agent=False
         ) as m:
-            print(f"🔗 已连接到设备: {host}")
-            print(f"📋 设备支持的NETCONF功能 (共{len(m.server_capabilities)}项):")
+            print(f"🔍 正在探索设备配置结构: {host}")
             
-            for i, capability in enumerate(m.server_capabilities, 1):
-                print(f"  {i:3d}. {capability}")
-            
-            return list(m.server_capabilities)
+            # 获取整个配置
+            try:
+                result = m.get_config(source='running')
+                config_xml = result.data_xml
+                
+                print(f"✅ 成功获取设备配置 (长度: {len(config_xml)} 字符)")
+                
+                # 保存到文件
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                output_file = f"device_config_sample.xml"
+                
+                with open(output_file, 'w', encoding='utf-8') as f:
+                    f.write(config_xml)
+                
+                print(f"💾 配置已保存到: {output_file}")
+                
+                # 分析根元素和命名空间
+                try:
+                    root = ET.fromstring(config_xml)
+                    print(f"🏗️  根元素: {root.tag}")
+                    print(f"📦 命名空间属性: {root.attrib}")
+                    
+                    # 显示前几级子元素
+                    print(f"📂 主要配置模块:")
+                    for child in root:
+                        print(f"  - {child.tag} (子元素: {len(list(child))})")
+                        
+                except ET.ParseError as e:
+                    print(f"⚠️  XML解析错误: {e}")
+                
+                return config_xml
+                
+            except Exception as e:
+                print(f"❌ 获取配置失败: {e}")
+                return None
             
     except Exception as e:
         print(f"❌ 连接失败: {e}")
         return None
-
-def explore_device_config(host, username, password, port=830):
     """探索设备的配置结构"""
     try:
         with manager.connect(
@@ -1161,7 +1292,7 @@ def main():
         print('  "hostip": "192.168.56.10",')
         print('  "username": "admin",') 
         print('  "password": "h3c.com123",')
-        print('  "operation": "interface|vlan|test|capabilities|explore|netconf-info",')
+        print('  "operation": "interface|vlan|test|explore|netconf-info",')
         print('  "ifindex": 25,                            # 接口配置时需要(接口索引)')
         print('  "description": "测试接口",                # 可选')
         print('  "admin_status": "shutdown|undo shutdown", # 可选(接口管理状态)')
@@ -1193,9 +1324,6 @@ def main():
         print()
         print('# 配置VLAN')
         print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"vlan","vlan_id":100,"vlan_name":"测试VLAN"}\'')
-        print()
-        print('# 查看设备功能')
-        print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"capabilities"}\'')
         print()
         print('# 探索设备配置')
         print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"explore"}\'')
@@ -1244,15 +1372,24 @@ def main():
                 json_str = json_str[1:-1]
             params = json.loads(json_str)
         
-        # 提取参数
-        hostip = params.get('hostip')
-        username = params.get('username')
-        password = params.get('password')
+        # 提取参数 - 传统格式优先
         operation = params.get('operation', 'test').lower()
         
+        # 传统格式 (主要格式)
+        hostip = params.get('hostip')
+        username = params.get('username') 
+        password = params.get('password')
+        port = params.get('port', 830)  # 支持传统格式中的port参数
+        
         # 验证必需参数
-        if not all([hostip, username, password]):
-            print("❌ 缺少必需参数: hostip, username, password")
+        if not hostip:
+            print("❌ 缺少必需参数: hostip")
+            return
+        if not username:
+            print("❌ 缺少必需参数: username")
+            return
+        if not password:
+            print("❌ 缺少必需参数: password")
             return
             
     except json.JSONDecodeError as e:
@@ -1273,27 +1410,16 @@ def main():
             print("🚀 开始NETCONF连接测试...")
             write_log("Running", None, None, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
             
-            success = test_netconf_connection(hostip, username, password)
+            success = test_netconf_connection(hostip, username, password, port)
             status = "Completed" if success else "Failed"
             write_log(status, f"NETCONF连接测试", hostip, f"NETCONF_CONFIG_TEST_{timestamp}.log")
             
-        elif operation == 'capabilities':
-            # 查看设备功能
-            print("🚀 开始查询设备功能...")
-            write_log("Running", None, None, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
-            
-            capabilities = get_device_capabilities(hostip, username, password)
-            if capabilities:
-                write_log("Completed", f"设备功能查询", hostip, f"NETCONF_CONFIG_TEST_{timestamp}.log")
-            else:
-                write_log("Failed", f"设备功能查询", hostip, f"NETCONF_CONFIG_TEST_{timestamp}.log")
-                
         elif operation == 'explore':
             # 探索设备配置
             print("🚀 开始探索设备配置...")
             write_log("Running", None, None, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
             
-            config_xml = explore_device_config(hostip, username, password)
+            config_xml = explore_device_config(hostip, username, password, port)
             if config_xml:
                 write_log("Completed", f"设备配置探索", hostip, f"NETCONF_CONFIG_TEST_{timestamp}.log")
             else:
@@ -1307,7 +1433,7 @@ def main():
             print(f"🚀 开始获取NETCONF {type_str} 监控信息...")
             write_log("Running", None, None, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
             
-            success, result = get_netconf_monitoring_info(hostip, username, password, info_type)
+            success, result = get_netconf_monitoring_info(hostip, username, password, info_type, port)
             
             if success:
                 # 成功情况：记录XML数据和文件信息
@@ -1432,7 +1558,7 @@ def main():
             print("🚀 开始执行NETCONF接口配置...")
             write_log("Running", None, None, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
             
-            success, result = netconf_configure_interface(hostip, username, password, config_json)
+            success, result = netconf_configure_interface(hostip, username, password, config_json, port)
             
             if success:
                 # 成功情况：记录XML配置内容到commands字段（只记录核心配置和响应）
@@ -1474,7 +1600,7 @@ def main():
             write_log("Running", None, None, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
                 
             config_json = json.dumps(vlan_config)
-            success, message = netconf_configure_vlan(hostip, username, password, config_json)
+            success, message = netconf_configure_vlan(hostip, username, password, config_json, port)
             write_log("Completed" if success else "Failed", f"VLAN配置", hostip, message, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
             
         else:

@@ -1,0 +1,54 @@
+{
+    "status": "Completed",
+    "timestamp": "20250829_100507",
+    "result": {
+        "xml_config": [
+            "<config xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">",
+            "<top xmlns=\"http://www.h3c.com/netconf/config:1.0\">",
+            "<Ifmgr>",
+            "<Interfaces>",
+            "<Interface>",
+            "<IfIndex>48</IfIndex>",
+            "<Description>interface desc test xxxx</Description>",
+            "<AdminStatus>1</AdminStatus>",
+            "</Interface>",
+            "</Interfaces>",
+            "</Ifmgr>",
+            "</top>",
+            "</config>"
+        ],
+        "netconf_response": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rpc-reply xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"urn:uuid:5635efec-b2af-4b33-9963-27596d03d597\"><ok/></rpc-reply>"
+    },
+    "system_info": {
+        "RoCE-storage": [
+            "H3C Comware Software, Version 7.1.070, Release 6710P03",
+            "Copyright (c) 2004-2023 New H3C Technologies Co., Ltd. All rights reserved.",
+            "H3C S6850-56HF uptime is 2 weeks, 3 days, 1 hour, 22 minutes",
+            "Last reboot reason : Cold reboot",
+            "Boot image: flash:/s9850_6850-cmw710-boot-r6710p03.bin",
+            "Boot image version: 7.1.070, Release 6710P03",
+            "Compiled May 05 2023 11:00:00",
+            "System image: flash:/s9850_6850-cmw710-system-r6710p03.bin",
+            "System image version: 7.1.070, Release 6710P03",
+            "Compiled May 05 2023 11:00:00",
+            "MPU(M) Slot 1:",
+            "Uptime is 2 weeks,3 days,1 hour,22 minutes",
+            "H3C S6850-56HF MPU(M) with 1 C3558 Processor(s)",
+            "BOARD TYPE:         S6850-56HF",
+            "DRAM:               8192M bytes",
+            "FLASH:              3616M bytes",
+            "NVRAM:              0K bytes",
+            "PCB 1 Version:      VER.A",
+            "PCB 2 Version:      VER.A",
+            "Basic    BootWare Version: 300",
+            "Extended BootWare Version: 300",
+            "CPLD 1 Version:     004",
+            "CPLD 2 Version:     004",
+            "CPLD 3 Version:     001",
+            "Release Version:    H3C S6850-56HF-6710P03",
+            "Patch Version:      None",
+            "Reboot Cause:       ColdReboot",
+            "[SubSlot 0] 48SFP28 + 8QSFP28"
+        ]
+    }
+}
