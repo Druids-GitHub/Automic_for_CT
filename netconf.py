@@ -731,124 +731,6 @@ def explore_device_config(host, username, password, port=830):
         print(f"❌ 连接失败: {e}")
         return None
 
-def get_netconf_monitoring_info(host, username, password, info_type=None, port=830):
-    """
-    获取NETCONF监控信息
-    
-    Args:
-        host: 设备IP地址
-        username: 用户名
-        password: 密码
-        info_type: 信息类型 ('capabilities', 'datastores', 'schemas', 'sessions', 'statistics')
-                  为None时获取全部信息
-        port: NETCONF端口，默认830
-    
-    Returns:
-        tuple: (是否成功, 返回数据或错误信息)
-    """
-    try:
-        with manager.connect(
-            host=host,
-            port=port,
-            username=username,
-            password=password,
-            timeout=60,
-            device_params={'name': 'h3c'},
-            hostkey_verify=False,
-            look_for_keys=False,
-            allow_agent=False
-        ) as m:
-            print(f"🔗 已连接到设备: {host}")
-            
-            # 构建NETCONF监控信息查询XML
-            if info_type:
-                # 指定具体类型的查询
-                filter_xml = f'''
-                <netconf-state xmlns='urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring'>
-                    <{info_type}/>
-                </netconf-state>
-                '''
-                print(f"📋 查询NETCONF {info_type} 信息...")
-            else:
-                # 查询全部信息
-                filter_xml = '''
-                <netconf-state xmlns='urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring'/>
-                '''
-                print(f"📋 查询NETCONF 全部监控信息...")
-            
-            try:
-                # 使用get操作获取NETCONF状态信息
-                result = m.get(filter=('subtree', filter_xml))
-                
-                if result:
-                    result_xml = result.data_xml
-                    print(f"✅ 成功获取NETCONF监控信息 (长度: {len(result_xml)} 字符)")
-                    
-                    # 保存结果到文件
-                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    info_type_str = info_type if info_type else "all"
-                    output_file = f"netconf_{info_type_str}_info_{timestamp}.xml"
-                    
-                    with open(output_file, 'w', encoding='utf-8') as f:
-                        f.write(result_xml)
-                    
-                    print(f"💾 监控信息已保存到: {output_file}")
-                    
-                    # 解析并显示关键信息
-                    try:
-                        root = ET.fromstring(result_xml)
-                        print(f"🏗️  返回数据根元素: {root.tag}")
-                        
-                        # 查找netconf-state元素
-                        netconf_state = root.find('.//{urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring}netconf-state')
-                        if netconf_state is not None:
-                            print(f"📊 NETCONF状态信息包含以下模块:")
-                            for child in netconf_state:
-                                child_name = child.tag.split('}')[-1] if '}' in child.tag else child.tag
-                                child_count = len(list(child))
-                                print(f"  - {child_name} (子元素: {child_count})")
-                                
-                                # 显示一些详细信息
-                                if child_name == 'capabilities' and child_count > 0:
-                                    caps = child.findall('.//{urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring}capability')
-                                    print(f"    📋 设备支持 {len(caps)} 个能力")
-                                    
-                                elif child_name == 'sessions' and child_count > 0:
-                                    sessions = child.findall('.//{urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring}session')
-                                    print(f"    👥 当前有 {len(sessions)} 个活动会话")
-                                    
-                                elif child_name == 'datastores' and child_count > 0:
-                                    stores = child.findall('.//{urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring}datastore')
-                                    print(f"    🗄️  支持 {len(stores)} 个数据存储")
-                                    
-                                elif child_name == 'schemas' and child_count > 0:
-                                    schemas = child.findall('.//{urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring}schema')
-                                    print(f"    📄 支持 {len(schemas)} 个YANG模式")
-                        
-                    except ET.ParseError as e:
-                        print(f"⚠️  XML解析错误: {e}")
-                        print(f"原始XML数据: {result_xml[:500]}...")
-                    
-                    return True, {
-                        "xml_data": result_xml,
-                        "output_file": output_file,
-                        "info_type": info_type_str
-                    }
-                else:
-                    error_msg = "未收到有效响应"
-                    print(f"❌ {error_msg}")
-                    return False, error_msg
-                    
-            except Exception as e:
-                error_msg = f"NETCONF查询操作失败: {e}"
-                print(f"❌ {error_msg}")
-                return False, error_msg
-            
-    except Exception as e:
-        error_msg = f"连接失败: {e}"
-        print(f"❌ {error_msg}")
-        return False, error_msg
-
 def enable_netconf_via_ssh(host, username, password):
     """通过SSH连接启用H3C设备的NETCONF功能"""
     try:
@@ -1161,13 +1043,12 @@ def main():
         print('  "hostip": "192.168.56.10",')
         print('  "username": "admin",') 
         print('  "password": "h3c.com123",')
-        print('  "operation": "interface|vlan|test|capabilities|explore|netconf-info",')
+        print('  "operation": "interface|vlan|test|capabilities|explore",')
         print('  "ifindex": 25,                            # 接口配置时需要(接口索引)')
         print('  "description": "测试接口",                # 可选')
         print('  "admin_status": "shutdown|undo shutdown", # 可选(接口管理状态)')
         print('  "vlan_id": 100,                           # VLAN配置时需要')
-        print('  "vlan_name": "测试VLAN",                 # 可选')
-        print('  "info_type": "capabilities|datastores|schemas|sessions|statistics"  # NETCONF信息类型(可选)')
+        print('  "vlan_name": "测试VLAN"                   # 可选')
         print('}')
         print()
         print("示例:")
@@ -1190,7 +1071,6 @@ def main():
         print('# 具体索引值请查看设备接口配置')
         print('# admin_status="shutdown": 管理关闭接口 (AdminStatus=2)')
         print('# admin_status="undo shutdown": 管理开启接口 (AdminStatus=1)')
-        print()
         print('# 配置VLAN')
         print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"vlan","vlan_id":100,"vlan_name":"测试VLAN"}\'')
         print()
@@ -1199,32 +1079,6 @@ def main():
         print()
         print('# 探索设备配置')
         print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"explore"}\'')
-        print()
-        print('# 获取NETCONF监控信息(全部)')
-        print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"netconf-info"}\'')
-        print()
-        print('# 获取NETCONF能力信息') 
-        print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"netconf-info","info_type":"capabilities"}\'')
-        print()
-        print('# 获取NETCONF会话信息')
-        print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"netconf-info","info_type":"sessions"}\'')
-        print()
-        print('# 获取NETCONF数据存储信息')
-        print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"netconf-info","info_type":"datastores"}\'')
-        print()
-        print('# 获取NETCONF模式信息')
-        print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"netconf-info","info_type":"schemas"}\'')
-        print()
-        print('# 获取NETCONF统计信息')
-        print('python NETCONF_CONFIG_TEST.py \'{"hostip":"192.168.56.10","username":"admin","password":"h3c.com123","operation":"netconf-info","info_type":"statistics"}\'')
-        print()
-        print('# NETCONF监控信息说明:')
-        print('# info_type="capabilities": 获取设备支持的NETCONF能力集')
-        print('# info_type="datastores": 获取设备中的数据库信息')
-        print('# info_type="schemas": 获取设备中的YANG模式文件列表')
-        print('# info_type="sessions": 获取设备中的NETCONF会话信息')
-        print('# info_type="statistics": 获取NETCONF的统计信息')
-        print('# 不指定info_type时获取全部NETCONF监控信息')
         return
     
     # 解析JSON参数 - 支持多个参数合并
@@ -1298,38 +1152,6 @@ def main():
                 write_log("Completed", f"设备配置探索", hostip, f"NETCONF_CONFIG_TEST_{timestamp}.log")
             else:
                 write_log("Failed", f"设备配置探索", hostip, f"NETCONF_CONFIG_TEST_{timestamp}.log")
-                
-        elif operation == 'netconf-info':
-            # 获取NETCONF监控信息
-            info_type = params.get('info_type')  # 可选：capabilities, datastores, schemas, sessions, statistics
-            
-            type_str = info_type if info_type else "全部"
-            print(f"🚀 开始获取NETCONF {type_str} 监控信息...")
-            write_log("Running", None, None, file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}")
-            
-            success, result = get_netconf_monitoring_info(hostip, username, password, info_type)
-            
-            if success:
-                # 成功情况：记录XML数据和文件信息
-                write_log(
-                    "Completed",
-                    {
-                        "netconf_info_type": result['info_type'],
-                        "output_file": result['output_file'],
-                        "data_length": len(result['xml_data'])
-                    },
-                    {hostip: f"NETCONF {type_str} 监控信息获取成功"},
-                    file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}"
-                )
-            else:
-                # 失败情况：记录错误信息
-                write_log(
-                    "Failed",
-                    f"NETCONF {type_str} 监控信息获取失败",
-                    {hostip: hostip},
-                    error_message={"error_message": result},
-                    file_suffix=f"NETCONF_CONFIG_TEST_{timestamp}"
-                )
                 
         elif operation == 'interface':
             # 配置接口 - 使用接口索引
