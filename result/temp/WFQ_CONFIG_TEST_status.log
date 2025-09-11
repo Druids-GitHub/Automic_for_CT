@@ -1,0 +1,48 @@
+{
+    "status": "Completed",
+    "timestamp": "20250905_142804",
+    "result": {
+        "S1": [
+            "<S1>system-view\nSystem View: return to User View with Ctrl+Z.",
+            "[S1]interface GigabitEthernet1/0/2",
+            "[S1-GigabitEthernet1/0/2]qos wfq weight",
+            "[S1-GigabitEthernet1/0/2]qos wfq be group 1 weight 1",
+            "[S1-GigabitEthernet1/0/2]qos wfq af1 group 1 weight 2",
+            "[S1-GigabitEthernet1/0/2]qos wfq af2 group 1 weight 2",
+            "[S1-GigabitEthernet1/0/2]qos wfq af3 group 1 weight 2",
+            "[S1-GigabitEthernet1/0/2]qos wfq af4 group 1 weight 2",
+            "[S1-GigabitEthernet1/0/2]qos wfq ef group 1 weight 2",
+            "[S1-GigabitEthernet1/0/2]qos wfq cs6 group 1 weight 2",
+            "[S1-GigabitEthernet1/0/2]qos wfq cs7 group 1 weight 3",
+            "[S1-GigabitEthernet1/0/2]quit",
+            "[S1]quit"
+        ]
+    },
+    "system_info": {
+        "S1": [
+            "H3C Comware Software, Version 7.1.070, Alpha 7170",
+            "Copyright (c) 2004-2022 New H3C Technologies Co., Ltd. All rights reserved.",
+            "H3C S6850 uptime is 0 weeks, 1 day, 14 hours, 28 minutes",
+            "Last reboot reason: User reboot",
+            "Boot image: flash:/s6850-cmw710-boot-t7064p15.bin",
+            "Boot image version: 7.1.070, Alpha 7170",
+            "  Compiled Nov 21 2022 11:00:00",
+            "Boot image: flash:/s6850-cmw710-system-t7064p15.bin",
+            "Boot image version: 7.1.070, Alpha 7170",
+            "  Compiled Nov 21 2022 11:00:00",
+            "Slot 1:",
+            "S6850 with 2 Processors",
+            "BOARD TYPE: S6850",
+            "DRAM:  512M bytes",
+            "FLASH: 1024M bytes",
+            "PCB 1 Version: VER.C",
+            "Bootrom Version: 908",
+            "CPLD 1 Version: 002",
+            "CPLD 2 Version: 002",
+            "Release Version: H3C S6850",
+            "Patch Version: None",
+            "Reboot Cause: User reboot",
+            "[SubSlot 0] 48SFP Plus+4QSFP Plus"
+        ]
+    }
+}
