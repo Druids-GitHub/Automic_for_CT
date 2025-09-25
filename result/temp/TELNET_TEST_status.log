@@ -1,0 +1,9 @@
+{
+    "status": "Failed",
+    "timestamp": "20250925_105653",
+    "result": {
+        "login_result": "failed",
+        "error_message": "未知错误"
+    },
+    "system_info": {}
+}

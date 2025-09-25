@@ -1,0 +1,9 @@
+{
+    "status": "Failed",
+    "timestamp": "20250925_104349",
+    "result": {
+        "login_result": "failed",
+        "error_message": "TCP连接失败/无法到达设备"
+    },
+    "system_info": {}
+}
